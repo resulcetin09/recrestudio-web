@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Internal: planning docs, review captures (contain phone number, client notes)
+docs/
+
+# Internal production tools (brand/video scripts, fonts, venv, node_modules)
+tools/
+
+# Social-media video sources (include a client's real menu screenshots)
+videolar/
+
+# Internal web style guide
+kilavuz/
+
+# Python / Node leftovers
+__pycache__/
+*.pyc
+node_modules/
+.venv/

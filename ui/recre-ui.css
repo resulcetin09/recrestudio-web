@@ -1,0 +1,208 @@
+/* ReCre Studio — web kimliği: ortak arayüz katmanı.
+   Site (../index.html) ve kılavuz (../kilavuz/) aynı dosyayı kullanır; kararlar
+   docs/superpowers/specs/2026-09-30-recre-web-kimligi-design.md içinde.
+   Renkler sahne değişkenlerinden gelir (--bg, --fg, --muted, --accent, --dolgu);
+   main.js WORLDS bunları sahne değiştikçe günceller. */
+
+/* ---------- fonts ---------- */
+/* Fraunces is variable: its defaults are wght 900 / WONK 1, so every use sets
+   font-weight explicitly. Subset to Latin + Turkish (fonts/OFL-Fraunces.txt). */
+@font-face {
+  font-family: "Fraunces"; font-style: normal; font-weight: 300 600; font-display: swap;
+  src: url("../fonts/Fraunces.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces"; font-style: italic; font-weight: 300 600; font-display: swap;
+  src: url("../fonts/Fraunces-Italic.woff2") format("woff2");
+}
+
+/* ---------- tokens ---------- */
+:root {
+  /* palette (kurumsal kimlik) */
+  --krem: #F7F1E6;
+  --gece: #16213A;
+  --kiremit: #D9482B;
+  --kiremit-acik: #E98B72;   /* accent on dark grounds only */
+  --sis: #C9D3E0;
+
+  /* world values: light ground by default */
+  --bg: var(--krem);
+  --fg: var(--gece);
+  --muted: #5B6478;
+  --accent: var(--kiremit);
+  --dolgu: #2B3B63;          /* primary button hover fill (#FFFFFF on dark) */
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* motion: calm / editorial — no overshoot anywhere */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --ease-in-out: cubic-bezier(.7, 0, .2, 1);
+  --ease-in: cubic-bezier(.5, 0, .8, .4);
+  --t-hizli: 200ms;
+  --t-orta: 450ms;
+  --t-yavas: 900ms;
+  --t-sahne: 1300ms;
+}
+/* a dark ground anywhere (the site's works scene sets these from main.js) */
+.r-koyu {
+  --bg: var(--gece); --fg: var(--krem); --muted: #8A8F9C; --accent: var(--kiremit-acik); --dolgu: #FFFFFF;
+}
+
+/* ---------- buttons ---------- */
+.r-btn {
+  position: relative; isolation: isolate; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 44px; padding: 0 24px; border: 0; border-radius: 999px;
+  background: var(--fg); color: var(--bg);
+  font: 500 15px/1 var(--font-body); text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: background-color var(--t-orta) ease, color var(--t-orta) ease, box-shadow var(--t-orta) ease,
+    transform var(--t-hizli) var(--ease-out);
+}
+/* H2: a lighter gece rises from below */
+.r-btn::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+  background: var(--dolgu); transform: translateY(101%);
+  transition: transform var(--t-orta) var(--ease-out);
+}
+.r-ar { display: inline-block; transition: transform var(--t-orta) var(--ease-out); }
+@media (hover: hover) {
+  .r-btn:hover::before { transform: none; }
+  .r-btn:hover .r-ar, .r-link-ok:hover .r-ar { transform: translateX(4px); }
+}
+.r-btn:active { transform: scale(.98); }
+.r-btn:focus-visible, .r-link:focus-visible, .r-link-ok:focus-visible, .r-logo-canli:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px;
+}
+.r-btn--sm { min-height: 44px; padding: 0 20px; font-size: 14px; }
+.r-btn--lg { min-height: 60px; padding: 0 40px; font-size: 16px; }
+
+.r-btn--ikincil { background: transparent; color: var(--fg); box-shadow: inset 0 0 0 1.5px var(--fg); }
+.r-btn--ikincil::before { display: none; }
+@media (hover: hover) {
+  .r-btn--ikincil:hover { background: color-mix(in srgb, var(--fg) 6%, transparent); }
+}
+
+.r-btn[disabled], .r-btn[aria-disabled="true"] {
+  background: var(--sis); color: #5B6478; box-shadow: none; cursor: not-allowed; transform: none;
+}
+.r-btn--ikincil[disabled], .r-btn--ikincil[aria-disabled="true"] {
+  background: transparent; color: #8A8F9C; box-shadow: inset 0 0 0 1.5px var(--sis);
+}
+.r-btn[disabled]::before, .r-btn[aria-disabled="true"]::before { display: none; }
+
+/* loading: a dashed trail runs inside the pill in place of the arrow */
+.r-yukleniyor { display: none; width: 34px; height: 8px; overflow: visible; }
+.r-yukleniyor path {
+  fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 3 4;
+  animation: r-iz-ak 0.9s linear infinite;
+}
+.r-btn.is-loading { pointer-events: none; }
+.r-btn.is-loading .r-yukleniyor { display: inline-block; }
+.r-btn.is-loading .r-ar { display: none; }
+@keyframes r-iz-ak { to { stroke-dashoffset: -14; } }
+
+/* ---------- links ---------- */
+.r-link {
+  color: var(--fg); text-decoration: none; padding-bottom: 3px;
+  background-image: linear-gradient(currentColor, currentColor),
+    linear-gradient(color-mix(in srgb, var(--fg) 28%, transparent), color-mix(in srgb, var(--fg) 28%, transparent));
+  background-size: 0 1px, 100% 1px; background-position: 0 100%, 0 100%; background-repeat: no-repeat;
+  transition: background-size 500ms var(--ease-out);
+}
+@media (hover: hover) { .r-link:hover { background-size: 100% 1px, 100% 1px; } }
+.r-link-ok {
+  display: inline-flex; align-items: center; gap: 8px; color: var(--fg); text-decoration: none;
+  font: 500 12px/1 var(--font-mono); letter-spacing: .14em; text-transform: uppercase;
+}
+
+/* ---------- L1: nav logo — the badge's trail redraws, the plane glides ---------- */
+.logo-rozet-ucak { transition: transform var(--t-orta) var(--ease-out); }
+@media (hover: hover) {
+  .r-logo-canli:hover .logo-rozet-iz { animation: r-iz-ciz var(--t-yavas) var(--ease-out); }
+  .r-logo-canli:hover .logo-rozet-ucak { transform: translate(8px, -5px); transition-duration: 700ms; }
+}
+.r-logo-canli:focus-visible .logo-rozet-iz { animation: r-iz-ciz var(--t-yavas) var(--ease-out); }
+.r-logo-canli:focus-visible .logo-rozet-ucak { transform: translate(8px, -5px); transition-duration: 700ms; }
+@keyframes r-iz-ciz { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+
+/* ---------- L2: flight-trail progress (createTrailProgress builds the SVG) ---------- */
+.r-trail { display: block; width: 100%; height: 100%; overflow: visible; }
+.r-trail__base, .r-trail__done { fill: none; stroke-width: 1.5; stroke-dasharray: 3 4; stroke-linecap: round; }
+.r-trail__base { stroke: color-mix(in srgb, var(--fg) 16%, transparent); }
+.r-trail__done { stroke: var(--accent); stroke-width: 1.7; }
+
+/* ---------- loader: the "Kalkış" signature ---------- */
+/* .is-playing draws it; finish() adds .is-leaving (plane takes off) then
+   .is-revealing (the krem curtain lifts). html.r-tekrar = seen this session. */
+.r-loader {
+  --kalkis: 900ms; --perde: 1000ms;
+  position: fixed; inset: 0; z-index: 10;
+  display: grid; place-content: center; justify-items: center; gap: 14px;
+  background: var(--krem); color: var(--gece);
+  clip-path: inset(0 0 0 0);
+}
+.r-loader--yerinde { position: absolute; }          /* demos inside a box */
+.r-loader__mark { display: block; width: min(220px, 56vw); overflow: visible; }
+.r-loader__mark svg { display: block; width: 100%; height: auto; overflow: visible; }
+.r-loader__count { font: 500 12px/1 var(--font-mono); letter-spacing: .2em; color: #5B6478; }
+
+.r-loader .r-kalkis__iz { clip-path: inset(0 100% 0 0); }
+.r-loader .r-kalkis__ucak { opacity: 0; }
+.r-loader.is-playing .r-kalkis__iz { animation: r-iz-ciz var(--t-sahne) var(--ease-out) forwards; }
+.r-loader.is-playing .r-kalkis__ucak { animation: r-belir 500ms ease-out 1100ms forwards; }
+
+.r-loader.is-leaving :is(.r-kalkis__yazi, .r-kalkis__iz, .r-loader__count) {
+  opacity: 0; transition: opacity 500ms ease;
+}
+.r-loader.is-leaving .r-kalkis__ucak {
+  opacity: 1; animation: r-kalk var(--kalkis) var(--ease-in) forwards;
+}
+.r-loader.is-revealing {
+  clip-path: inset(0 0 100% 0); transition: clip-path var(--perde) var(--ease-in-out);
+}
+@keyframes r-belir { to { opacity: 1; } }
+@keyframes r-kalk {
+  0% { opacity: 1; transform: none; }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: translate(700px, -620px); }
+}
+
+/* repeat visit: already drawn, quick take-off */
+.r-loader--tekrar, html.r-tekrar .r-loader { --kalkis: 600ms; --perde: 600ms; }
+:is(.r-loader--tekrar, html.r-tekrar .r-loader) .r-kalkis__iz { clip-path: none; animation: none !important; }
+:is(.r-loader--tekrar, html.r-tekrar .r-loader) .r-kalkis__ucak { opacity: 1; animation: none; }
+:is(.r-loader--tekrar, html.r-tekrar .r-loader).is-leaving .r-kalkis__ucak { animation: r-kalk var(--kalkis) var(--ease-in) forwards; }
+
+/* print / frozen frames (guide filmstrips): the same keyframes, paused at a moment */
+.r-dondur, .r-dondur * { animation-play-state: paused !important; }
+
+/* ---------- reduced motion ---------- */
+/* The same rules twice: the media query for visitors, html.r-az-hareket for the
+   guide's preview switch. Change both together. */
+@media (prefers-reduced-motion: reduce) {
+  .r-loader .r-kalkis__iz { clip-path: none; animation: none !important; }
+  .r-loader .r-kalkis__ucak { opacity: 1; animation: none !important; }
+  .r-loader.is-leaving .r-kalkis__ucak { animation: none !important; }
+  .r-loader.is-revealing { clip-path: none; opacity: 0; transition: opacity 400ms ease; }
+  .r-ar, .logo-rozet-ucak { transition: none; }
+  .r-btn:hover .r-ar, .r-link-ok:hover .r-ar { transform: none; }
+  .r-logo-canli:is(:hover, :focus-visible) .logo-rozet-iz { animation: none; }
+  .r-logo-canli:is(:hover, :focus-visible) .logo-rozet-ucak { transform: none; }
+  .r-btn::before { transition: none; }
+  .r-btn:active { transform: none; }
+  .r-yukleniyor path { animation: none; }
+}
+
+html.r-az-hareket .r-loader .r-kalkis__iz { clip-path: none; animation: none !important; }
+html.r-az-hareket .r-loader .r-kalkis__ucak { opacity: 1; animation: none !important; }
+html.r-az-hareket .r-loader.is-leaving .r-kalkis__ucak { animation: none !important; }
+html.r-az-hareket .r-loader.is-revealing { clip-path: none; opacity: 0; transition: opacity 400ms ease; }
+html.r-az-hareket .r-ar, html.r-az-hareket .logo-rozet-ucak { transition: none; }
+html.r-az-hareket .r-btn:hover .r-ar, html.r-az-hareket .r-link-ok:hover .r-ar { transform: none; }
+html.r-az-hareket .r-logo-canli:is(:hover, :focus-visible) .logo-rozet-iz { animation: none; }
+html.r-az-hareket .r-logo-canli:is(:hover, :focus-visible) .logo-rozet-ucak { transform: none; }
+html.r-az-hareket .r-btn::before { transition: none; }
+html.r-az-hareket .r-btn:active { transform: none; }
+html.r-az-hareket .r-yukleniyor path { animation: none; }
