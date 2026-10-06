@@ -10,6 +10,8 @@ import qrcode from 'qrcode-generator';
 
 export const INSTAGRAM = 'https://www.instagram.com/recre_studio/';
 export const EMAIL = 'recrestudio0@gmail.com';
+// the opening phone's QR ("Masa 07") opens Kuytu's menu at table 7, a ReCre work
+const KUYTU_MENU = 'https://kuytu-menu.vercel.app/m/kuytu?masa=7';
 
 // brand palette (kurumsal kimlik)
 const INK = '#16213A';       // gece: all text
@@ -125,7 +127,7 @@ function phoneQR() {
   drawRozet(g, w / 2, 160, 96);
   text(g, 'ReCre', w / 2, 300, { font: `500 88px ${SERIF}`, align: 'center' });
   text(g, 'DİJİTAL MENÜ', w / 2, 350, { font: `500 20px ${MONO}`, color: GREY, align: 'center' });
-  drawQR(g, INSTAGRAM, (w - 400) / 2, 420, 400);
+  drawQR(g, KUYTU_MENU, (w - 400) / 2, 420, 400);
   text(g, 'Menüyü görmek için', w / 2, 910, { font: `400 30px ${SANS}`, color: GREY, align: 'center' });
   text(g, 'kameranla okut', w / 2, 952, { font: `400 30px ${SANS}`, color: GREY, align: 'center' });
   pill(g, w / 2 - 110, 1040, 220, 64, INK);
