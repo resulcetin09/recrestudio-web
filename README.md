@@ -36,7 +36,7 @@ ES modülleri ve model yüklemesi için bir sunucu gerekir.
 | `ui/` | Ortak marka bileşenleri: renk token'ları, butonlar, yükleyici, ilerleme izi |
 | `style.css` | Sayfa düzeni |
 | `models/`, `assets/`, `fonts/` | 3D model, görseller, Fraunces fontu |
-| `data/projects.json` | "İşler" bölümündeki proje kartları |
+| `data/projects.json` | "İşler" bölümündeki proje kartları (görseller `assets/isler/`) |
 
 ## Yayın
 

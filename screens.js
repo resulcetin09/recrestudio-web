@@ -134,47 +134,14 @@ function phoneQR() {
 }
 
 // Twice the screen's height; the page scrolls it with texture.offset.
-function phoneMenu() {
+// Kuytu's QR menu (a ReCre work), captured by tools/isler-yakala.mjs.
+async function phoneMenu() {
   const [w, h] = [PHONE[0], PHONE[1] * 2];
-  const [c, g] = canvas(w, h);
-  g.fillStyle = INK;
-  g.fillRect(0, 0, w, 250);
-  statusBar(g, w, KREM);
-  text(g, 'Örnek Kafe', 44, 190, { font: `500 68px ${SERIF}`, color: KREM });
-  const chips = ['Kahveler', 'Tatlılar', 'Kahvaltı'];
-  let x = 44;
-  chips.forEach((s, i) => {
-    g.font = `500 24px ${SANS}`;
-    const cw = g.measureText(s).width + 44;
-    pill(g, x, 290, cw, 56, i === 0 ? INK : CHIP);
-    text(g, s, x + 22, 327, { font: `500 24px ${SANS}`, color: i === 0 ? KREM : INK });
-    x += cw + 14;
-  });
-  const items = [
-    ['Espresso', 'Tek shot, yoğun', '₺75', '#6B4A34'],
-    ['Latte', 'Espresso, süt köpüğü', '₺95', '#C9A27E'],
-    ['Flat White', 'Çift ristretto', '₺100', '#A87D5A'],
-    ['Filtre Kahve', 'Günün çekirdeği', '₺85', '#3E2A1E'],
-    ['Soğuk Demleme', '18 saat demlenir', '₺110', '#2B1D14'],
-    ['Cheesecake', 'Frambuazlı', '₺140', '#E8C9B5'],
-    ['Brownie', 'Sıcak servis', '₺120', '#4A2C1C'],
-    ['San Sebastian', 'Günün dilimi', '₺150', '#D9A66B'],
-    ['Menemen', 'Köy yumurtası', '₺160', '#D9573B'],
-    ['Serpme Kahvaltı', 'İki kişilik', '₺520', '#E0B84F'],
-    ['Simit Tabağı', 'Beyaz peynir, zeytin', '₺130', '#B9823F'],
-    ['Taze Portakal', '330 ml', '₺90', '#F29F2E'],
-    ['Limonata', 'Ev yapımı', '₺80', '#E8D86A'],
-    ['Çay', 'İnce belli', '₺30', '#9C3B1F'],
-  ];
-  items.forEach(([name, desc, price, col], i) => {
-    const y = 400 + i * 150;
-    box(g, 44, y, 110, 110, 22, col);
-    text(g, name, 184, y + 46, { font: `600 32px ${SANS}` });
-    text(g, desc, 184, y + 90, { font: `400 24px ${SANS}`, color: GREY });
-    text(g, price, w - 44, y + 46, { font: `600 30px ${SANS}`, align: 'right' });
-    g.fillStyle = LINE;
-    g.fillRect(44, y + 132, w - 88, 2);
-  });
+  const [c, g] = canvas(w, h, '#1C1714');
+  const img = new Image();
+  img.src = './assets/isler/kuytu-telefon.jpg';
+  await img.decode().catch(() => {});
+  if (img.naturalWidth) g.drawImage(img, 0, 0, w, img.naturalHeight * (w / img.naturalWidth));
   const t = texture(c);
   t.repeat.set(1, 0.5);            // show half; the page scrolls offset.y 0 → 0.5
   return t;
@@ -321,7 +288,7 @@ export async function createScreens() {
     document.fonts.load(`500 20px ${MONO}`),
   ]).catch(() => {});
   return {
-    phone: [phoneQR(), phoneMenu(), phoneContact()],       // pose.phoneScreen
+    phone: [phoneQR(), await phoneMenu(), phoneContact()], // pose.phoneScreen
     laptop: [laptopSite(), laptopSearch(), await laptopAbout()], // pose.laptopScreen
   };
 }

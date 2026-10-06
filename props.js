@@ -115,6 +115,23 @@ const PLACEHOLDERS = [
   { title: 'Yakında', category: 'Web Sitesi' },
 ];
 
+// Largest size (92 → 52 px) at which the title wraps into at most `maxLines` lines of `maxW`.
+function fitTitle(g, text, style, maxW, maxLines) {
+  const words = text.split(' ');
+  let size = 92, lines;
+  for (; size >= 52; size -= 4) {
+    g.font = `${style}500 ${size}px ${SERIF}`;
+    lines = [];
+    for (const word of words) {
+      const next = lines.length ? `${lines.at(-1)} ${word}` : word;
+      if (lines.length && g.measureText(next).width <= maxW) lines[lines.length - 1] = next;
+      else lines.push(word);
+    }
+    if (lines.length <= maxLines && lines.every((l) => g.measureText(l).width <= maxW)) break;
+  }
+  return { size: Math.max(size, 52), lines };
+}
+
 async function workCard(p, i) {
   let img = null;
   if (p.image) {
@@ -128,26 +145,58 @@ async function workCard(p, i) {
     g.clip();
     g.fillStyle = '#22304F';          // gece, lifted so the cards read on the gece room
     g.fillRect(0, 0, w, h);
-    if (img) {
-      const s = Math.max(w / img.naturalWidth, h / img.naturalHeight);
-      g.drawImage(img, (w - img.naturalWidth * s) / 2, (h - img.naturalHeight * s) / 2,
-        img.naturalWidth * s, img.naturalHeight * s);
-      const fade = g.createLinearGradient(0, h * 0.45, 0, h);
-      fade.addColorStop(0, 'rgba(0,0,0,0)');
-      fade.addColorStop(1, 'rgba(22,33,58,0.85)');
-      g.fillStyle = fade;
-      g.fillRect(0, 0, w, h);
-    } else {
-      g.strokeStyle = 'rgba(247,241,230,0.07)';
-      g.lineWidth = 2;
-      for (let x = 40; x < w; x += 60) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, h); g.stroke(); }
+    g.strokeStyle = 'rgba(247,241,230,0.07)';
+    g.lineWidth = 2;
+    for (let x = 40; x < w; x += 60) { g.beginPath(); g.moveTo(x, 0); g.lineTo(x, h); g.stroke(); }
+
+    // portrait work (a phone menu, a post) stands on the right and the text takes
+    // the left; a website runs below its title like a window off the card's edge
+    const portrait = img && img.naturalHeight > img.naturalWidth;
+    const site = img && !portrait;
+    let textW = w - 112;
+    if (portrait) {
+      const pad = 48, ih = h - pad * 2, iw = img.naturalWidth * (ih / img.naturalHeight), ix = w - pad - iw;
+      g.save();
+      g.beginPath();
+      g.roundRect(ix, pad, iw, ih, 22);
+      g.clip();
+      g.drawImage(img, ix, pad, iw, ih);
+      g.restore();
+      textW = ix - 56 - 40;
     }
+
     g.fillStyle = '#8A8F9C';
     g.font = `500 24px ${MONO}`;
-    g.fillText(`${String(i + 1).padStart(2, '0')} — ${p.category.toLocaleUpperCase('tr')}`, 56, 80);
+    const label = `${String(i + 1).padStart(2, '0')} — ${p.category.toLocaleUpperCase('tr')}`;
+    if (g.measureText(label).width > textW) {   // narrow column: the label breaks after the number
+      const [num, rest] = label.split(' — ');
+      g.fillText(`${num} —`, 56, 80);
+      g.fillText(rest, 56, 116, textW);
+    } else {
+      g.fillText(label, 56, 80);
+    }
+
+    const style = img ? '' : 'italic ';
+    const { size, lines } = fitTitle(g, p.title, style, textW, site ? 1 : portrait ? 3 : 2);
     g.fillStyle = img ? '#F7F1E6' : '#E98B72';   // placeholders: italic kiremit-açık
-    g.font = `${img ? '' : 'italic '}500 92px ${SERIF}`;
-    g.fillText(p.title, 56, h - 70);
+    g.font = `${style}500 ${size}px ${SERIF}`;
+    if (site) {
+      const base = 114 + size * 0.8;
+      g.fillText(lines[0], 56, base);
+      const y = base + 44, iw = w - 112, ih = img.naturalHeight * (iw / img.naturalWidth);
+      g.save();
+      g.beginPath();
+      g.roundRect(56, y, iw, ih, 18);
+      g.clip();
+      g.drawImage(img, 56, y, iw, ih);
+      g.restore();
+      g.strokeStyle = 'rgba(247,241,230,0.18)';
+      g.beginPath();
+      g.roundRect(56, y, iw, ih, 18);
+      g.stroke();
+    } else {
+      lines.forEach((line, k) => g.fillText(line, 56, h - 70 - (lines.length - 1 - k) * size * 1.05));
+    }
   });
 }
 
@@ -155,7 +204,8 @@ export async function createRing(projects) {
   const list = projects.length ? projects : PLACEHOLDERS;
   const n = Math.max(list.length, 8);      // enough cards that neighbours sit close
   const items = Array.from({ length: n }, (_, i) => list[i % list.length]);
-  const textures = await Promise.all(items.map(workCard));
+  // repeats fill the ring; they keep the number of the work they repeat
+  const textures = await Promise.all(items.map((p, i) => workCard(p, i % list.length)));
   const group = new THREE.Group();
   const radius = 2.3;                      // tight ring: small gaps, slower sweep past the camera
   const step = (Math.PI * 2) / n;

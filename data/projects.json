@@ -1,1 +1,31 @@
-[]
+[
+  {
+    "title": "Sosyal Medya Yönetimi",
+    "category": "Vyora",
+    "image": "./assets/isler/vyora.jpg"
+  },
+  {
+    "title": "QR Menü",
+    "category": "Kuytu Kahve & Mutfak",
+    "image": "./assets/isler/kuytu.jpg",
+    "url": "https://kuytu-menu.vercel.app/m/kuytu?masa=7"
+  },
+  {
+    "title": "QR Menü",
+    "category": "Bozs Cafe & Bistro",
+    "image": "./assets/isler/bozs.jpg",
+    "url": "https://bozs-dijital-menu.vercel.app"
+  },
+  {
+    "title": "Profesyonel 3D Web Sitesi",
+    "category": "Web Sitesi",
+    "image": "./assets/isler/portfolyo-3d.jpg",
+    "url": "https://my-portfolio-main-drab.vercel.app"
+  },
+  {
+    "title": "Kurumsal Web Sitesi",
+    "category": "Web Sitesi",
+    "image": "./assets/isler/kurumsal.jpg",
+    "url": "https://my-portfolio-seven-sable-16.vercel.app"
+  }
+]
