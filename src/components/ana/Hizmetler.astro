@@ -1,0 +1,35 @@
+---
+// What we do: the four services, each linking to its section on /hizmetler.
+const hizmetler = [
+  { ad: 'QR menü', metin: 'Videolu, iki dilli, panelden güncellenen menüler.', ikon: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3z"/>' },
+  { ad: 'Web sitesi', metin: 'Hızlı açılan, markanı anlatan siteler.', ikon: '<rect x="2.5" y="4" width="19" height="14" rx="2"/><path d="M2.5 8h19M8 21h8"/>' },
+  { ad: 'SEO', metin: "Google'da ve Haritalar'da görünürlük.", ikon: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/>' },
+  { ad: 'Sosyal medya', metin: 'Gönderi, Reels ve hikâye tasarımı.', ikon: '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/>' },
+];
+---
+<section class="kap hizmetler">
+  <div>
+    <h2 class="ust">Ne yapıyoruz</h2>
+    <div class="liste">
+      {hizmetler.map((h) => (
+        <a class="hizmet" href="/hizmetler">
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={h.ikon} />
+          <div><h3 class="ust">{h.ad}</h3><p class="soluk">{h.metin}</p></div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hizmetler { padding-top: 96px; }
+  h2.ust { font-weight: 500; margin-bottom: 28px; }
+  .liste { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 36px 24px; }
+  .hizmet { display: flex; gap: 16px; text-decoration: none; color: var(--metin); }
+  .hizmet svg { flex: none; transition: color var(--t-orta) ease; }
+  .hizmet h3 { color: var(--metin); font-weight: 500; }
+  .hizmet p { margin-top: 8px; font-size: 14px; }
+  .hizmet:hover svg { color: var(--kiremit-acik); }
+  @media (max-width: 1100px) { .liste { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .liste { grid-template-columns: 1fr; } }
+</style>

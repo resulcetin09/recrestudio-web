@@ -1,0 +1,98 @@
+---
+import Logo from '../assets/logo-yatay.svg';
+import { NAV, CONTACT } from '../data/site';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+<header class="ust-serit">
+  <div class="kap ust-serit__ic">
+    <a class="logo" href="/" aria-label="ReCre Studio ana sayfa">
+      <Logo role="img" aria-label="ReCre Studio" />
+    </a>
+    <nav aria-label="Site">
+      <ul class="menu">
+        {NAV.map((item) => (
+          <li><a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <a class="btn btn--hap nav-cta" href="/iletisim">Teklif al <span class="ok" aria-hidden="true">↗</span></a>
+    <button class="menu-ac" type="button" aria-expanded="false" aria-controls="tel-menu" aria-label="Menüyü aç">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path class="ikon-ac" d="M3 7h14M3 13h14"/><path class="ikon-kapa" d="M5 5l10 10M15 5L5 15"/></svg>
+    </button>
+  </div>
+
+  <div class="tel-menu" id="tel-menu" hidden>
+    <div class="kap tel-menu__ic">
+      <ul>
+        {NAV.map((item) => (
+          <li><a class="dar" href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a></li>
+        ))}
+      </ul>
+      <div class="tel-menu__alt">
+        <a class="btn btn--lg" href="/iletisim">Teklif al <span class="ok" aria-hidden="true">↗</span></a>
+        <p class="soluk">{CONTACT.email}<br />{CONTACT.phoneDisplay}</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.menu-ac');
+  const panel = document.getElementById('tel-menu');
+  if (btn && panel) {
+    const set = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+      panel.hidden = !open;
+      document.documentElement.classList.toggle('menu-acik', open);
+    };
+    btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
+    matchMedia('(min-width: 901px)').addEventListener('change', (e) => { if (e.matches) set(false); });
+  }
+</script>
+
+<style>
+  .ust-serit { position: relative; z-index: 20; }
+  .ust-serit__ic {
+    height: var(--nav-h);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  }
+  .logo { display: block; line-height: 0; }
+  .logo :global(svg) { height: 42px; width: auto; overflow: visible; }
+  .menu { display: flex; gap: 36px; list-style: none; margin: 0; padding: 0; }
+  .menu a {
+    font: 500 13px/1 var(--font-metin); letter-spacing: .14em; text-transform: uppercase;
+    text-decoration: none; color: #B9BBC1; padding-block: 8px; transition: color var(--t-hizli) ease;
+  }
+  .menu a:hover, .menu a[aria-current='page'] { color: #FFF; }
+  .menu-ac {
+    display: none; width: 44px; height: 44px; align-items: center; justify-content: center;
+    border: 1px solid rgba(255, 255, 255, .25); border-radius: 999px; background: transparent; color: var(--metin);
+    cursor: pointer;
+  }
+  .ikon-kapa, .menu-ac[aria-expanded='true'] .ikon-ac { display: none; }
+  .menu-ac[aria-expanded='true'] .ikon-kapa { display: inline; }
+
+  .tel-menu {
+    position: fixed; inset: var(--nav-h) 0 0 0; z-index: 19;
+    background: var(--zemin); overflow-y: auto;
+  }
+  .tel-menu__ic { display: flex; flex-direction: column; justify-content: space-between; gap: 40px; min-height: 100%; padding-block: 24px 40px; }
+  .tel-menu ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .tel-menu ul a { font-size: 44px; line-height: 1.1; text-decoration: none; color: #B9BBC1; }
+  .tel-menu ul a[aria-current='page'] { color: #FFF; }
+  .tel-menu__alt { display: flex; flex-direction: column; gap: 20px; }
+  .tel-menu__alt .btn { align-self: flex-start; }
+  .tel-menu__alt p { font-size: 15px; }
+  :global(.menu-acik) { overflow: hidden; }
+  :global(.menu-acik) .ust-serit { position: fixed; inset: 0 0 auto; background: var(--zemin); }
+
+  @media (max-width: 900px) {
+    .menu, .nav-cta { display: none; }
+    .menu-ac { display: inline-flex; }
+    .logo :global(svg) { height: 36px; }
+  }
+</style>

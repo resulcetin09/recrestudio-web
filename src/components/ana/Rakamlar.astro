@@ -1,0 +1,38 @@
+---
+// Four real figures: 1212/951 from musteri-analizi/veri/rows.json (22 Oct 2026),
+// ~2 s from Menü Fabrikası Lighthouse runs (real throttling, LCP 1.5–2.2 s).
+---
+<section class="kap rakamlar">
+  <div class="panel liste">
+    <div>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21" /></svg>
+      <p class="sayi">1212</p><p class="ust">İşletme inceledik</p>
+    </div>
+    <div>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="14" rx="2" /><path d="M2.5 8h19M8 21h8M9 12l6 4M15 12l-6 4" /></svg>
+      <p class="sayi">951</p><p class="ust">Sitesi yok</p>
+    </div>
+    <div>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z" /></svg>
+      <p class="sayi">~2 sn</p><p class="ust">Menünün açılışı</p>
+    </div>
+    <div>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" aria-hidden="true"><path d="M4 20h16M7 16V9M12 16V5M17 16v-4" /></svg>
+      <p class="sayi">0 ₺</p><p class="ust">Menü baskı masrafı</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rakamlar { padding-top: 72px; }
+  .liste { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding: 36px 0; }
+  .liste > div { text-align: center; padding: 0 16px; display: flex; flex-direction: column; align-items: center; color: var(--metin); }
+  .liste > div + div { border-left: 1px solid rgba(255, 255, 255, .08); }
+  .sayi { margin-top: 14px; font-size: 52px; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
+  .ust { margin-top: 12px; }
+  @media (max-width: 900px) {
+    .liste { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 32px; }
+    .liste > div + div { border-left: 0; }
+    .sayi { font-size: 44px; }
+  }
+</style>

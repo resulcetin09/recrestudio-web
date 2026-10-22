@@ -1,0 +1,22 @@
+---
+import { CONTACT } from '../data/site';
+---
+<footer class="kap alt-serit">
+  <span class="soluk">© 2026 ReCre Studio</span>
+  <span class="ust alt-serit__baglar">
+    <a href={CONTACT.instagram} rel="noopener" target="_blank" lang="en">Instagram</a>
+    <span aria-hidden="true">·</span>
+    <a href={CONTACT.linkedin} rel="noopener" target="_blank" lang="en">LinkedIn</a>
+  </span>
+</footer>
+
+<style>
+  .alt-serit {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;
+    padding-block: 24px 40px;
+  }
+  .alt-serit > .soluk { font-size: 13px; }
+  .alt-serit__baglar { display: flex; gap: 8px; }
+  .alt-serit__baglar a { text-decoration: none; color: inherit; }
+  .alt-serit__baglar a:hover { color: var(--metin); }
+</style>

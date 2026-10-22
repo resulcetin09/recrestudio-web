@@ -1,0 +1,212 @@
+---
+import { Image } from 'astro:assets';
+import Site from '../layouts/Site.astro';
+import SayfaBasi from '../components/SayfaBasi.astro';
+import Kapanis from '../components/ana/Kapanis.astro';
+import { PAKETLER, FIYAT_NOTU } from '../data/paketler';
+import kuytu from '../assets/isler/kuytu.jpg';
+import bozsKaranlik from '../assets/isler/bozs-karanlik.png';
+import veil from '../assets/isler/veil.png';
+import deepreo from '../assets/isler/deepreo.jpg';
+import bugdoctor from '../assets/isler/bugdoctor.jpg';
+
+const sekmeler = [
+  ['#qr-menu', 'QR menü'], ['#web-sitesi', 'Web sitesi'], ['#seo', 'SEO'], ['#sosyal-medya', 'Sosyal medya'],
+];
+---
+<Site
+  title="Hizmetler ve fiyatlar | ReCre Studio"
+  description="QR menü, web sitesi, SEO ve sosyal medya yönetimi. Paketler ve fiyatlar: Menü 5.000 ₺, Profesyonel menü 10.000 ₺, Web sitesi 10.000 ₺."
+>
+  <SayfaBasi
+    etiket="Hizmetler"
+    baslik="Neler yapıyoruz"
+    aciklama="Restoran, kafe ve yerel markalar için menüden siteye, Google'dan Instagram'a kadar tek elden. Paketler ve fiyatlar sayfanın sonunda."
+  >
+    <nav class="sekmeler" aria-label="Bu sayfada">
+      {sekmeler.map(([href, ad]) => <a class="sekme" href={href}>{ad}</a>)}
+      <a class="sekme sekme--vurgu" href="#paketler">Paketler ve fiyatlar</a>
+    </nav>
+  </SayfaBasi>
+
+  <section id="qr-menu" class="kap bolum-kap">
+    <div class="panel iz bolum">
+      <div class="metin">
+        <p class="ust"><span class="no">01</span>QR menü</p>
+        <h2 class="dar metal">Masada bir kare, cebinde menü</h2>
+        <p class="soluk">Müşteri kodu okutur, menü tarayıcıda açılır. Fiyatı panelden sen değiştirirsin, tüm masalar anında güncellenir.</p>
+        <ul class="liste">
+          <li>Videolu kategori kartları</li><li>Türkçe ve İngilizce</li><li>Panelden fiyat, ürün ve fotoğraf</li>
+          <li>İki düzen: Klasik ve Menü kartı</li><li>Açık ve koyu tema, şans çarkı</li><li>Baskıya hazır QR kodları</li>
+        </ul>
+      </div>
+      <div class="gorsel teller">
+        <div class="isik" aria-hidden="true"></div>
+        <div class="tel egik"><Image src={kuytu} alt="Kuytu QR menüsü" widths={[210, 420]} sizes="210px" /></div>
+        <div class="tel"><Image src={bozsKaranlik} alt="Bozs Cafe & Bistro QR menüsü" widths={[230, 460]} sizes="230px" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="web-sitesi" class="kap bolum-kap">
+    <div class="panel iz bolum">
+      <div class="gorsel gorsel--genis ters">
+        <div class="tarayici">
+          <div class="tarayici__ust" aria-hidden="true"><span></span><span></span><span></span></div>
+          <Image src={veil} alt="Veil web sitesi" widths={[700, 1400]} sizes="(max-width: 900px) 92vw, 700px" />
+        </div>
+      </div>
+      <div class="metin metin--sag">
+        <p class="ust"><span class="no">02</span>Web sitesi</p>
+        <h2 class="dar metal">Hızlı, net, senin sitende</h2>
+        <p class="soluk">Telefonda hızlı açılan, markanı anlatan ve müşteriyi aramaya, yol tarifine götüren siteler.</p>
+        <ul class="liste">
+          <li>Mobil öncelikli tasarım</li><li>WhatsApp, arama ve yol tarifi butonları</li>
+          <li>Google'a uygun sayfa yapısı</li><li>İstersen sinematik, 3D bir site</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="seo" class="kap bolum-kap">
+    <div class="panel iz bolum">
+      <div class="metin metin--genis">
+        <p class="ust"><span class="no">03</span>SEO ve Google Haritalar</p>
+        <h2 class="dar metal">Arayan seni bulsun</h2>
+        <p class="soluk">"Yakınımdaki kafe" aramasında görünmek için işletme profilini, siteni ve menünü birlikte düzenliyoruz. Sıralama sözü vermiyoruz; görünürlüğü artıran işleri yapıyoruz.</p>
+        <ul class="liste">
+          <li>Google İşletme Profili düzenlemesi</li><li>Hız ve aranabilir sayfa yapısı</li><li>Menü ve sitenin Google'da doğru görünmesi</li>
+        </ul>
+      </div>
+      <div class="karne">
+        <p class="ust karne__ust">Ücretsiz</p>
+        <p class="dar karne__baslik">Dijital karne</p>
+        <p class="karne__metin">İşletmenin Google'da, haritada ve web'de nasıl göründüğünü tek sayfada çıkarıyoruz: puan, yorum, site hızı, menü. Ücretsiz, bağlayıcı değil.</p>
+        <a class="btn" href="/iletisim?tur=karne">Karnemi iste <span class="ok" aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="sosyal-medya" class="kap bolum-kap">
+    <div class="panel iz bolum">
+      <div class="metin">
+        <p class="ust"><span class="no">04</span>Sosyal medya</p>
+        <h2 class="dar metal">Markanın sesi her gönderide aynı</h2>
+        <p class="soluk">Menünle, sitenle aynı dili konuşan bir Instagram. İçeriği planlıyor, tasarlıyor ve paylaşıyoruz.</p>
+        <ul class="liste">
+          <li>Aylık içerik planı</li><li>Gönderi ve karusel tasarımı</li><li>Reels ve hikâye</li><li>Seslendirmeli tanıtım videoları</li>
+        </ul>
+      </div>
+      <div class="gorsel ikili">
+        <Image src={deepreo} alt="Deepreo Instagram serisi" widths={[300, 600]} sizes="(max-width: 900px) 45vw, 300px" />
+        <Image src={bugdoctor} alt="Bug Doctor tanıtım videosundan bir kare" widths={[300, 600]} sizes="(max-width: 900px) 45vw, 300px" />
+      </div>
+    </div>
+  </section>
+
+  <section id="paketler" class="kap paketler">
+    <p class="ust">Paketler ve fiyatlar</p>
+    <h2 class="dar metal paketler__baslik">Net fiyat, net kapsam</h2>
+    <p class="soluk paketler__not">{FIYAT_NOTU}</p>
+    <div class="iz paketler__izgara">
+      {PAKETLER.map((p) => (
+        <article class:list={['panel', 'paket', { 'paket--onerilen': p.onerilen, 'paket--ozel': p.ozel }]}>
+          <div>
+            <p class="ust paket__grup">{p.grup}{p.onerilen && ' · önerilen'}</p>
+            <h3 class:list={['dar', 'paket__ad', { metal: p.ozel }]}>{p.ad}</h3>
+          </div>
+          <p class:list={['paket__fiyat', { metal: p.ozel }]}>{p.fiyat}{p.donem && <span class="paket__donem">{p.donem}</span>}</p>
+          <ul class="liste">{p.ozellikler.map((o) => <li>{o}</li>)}</ul>
+          <a class:list={['btn', { 'btn--cizgi': !p.onerilen && !p.ozel }]} href={`/iletisim?paket=${p.kod}`}>
+            {p.ozel ? 'Görüşelim' : 'Teklif al'} <span class="ok" aria-hidden="true">↗</span>
+          </a>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <Kapanis metin="Hangi paketin sana uyduğundan emin değilsen yaz, birlikte bakalım." />
+</Site>
+
+<style>
+  .sekmeler { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+  .sekme {
+    display: inline-flex; align-items: center; min-height: 40px; padding: 0 18px; border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .14); text-decoration: none; color: #D7D5D0;
+    font: 500 13px/1 var(--font-metin); letter-spacing: .1em; text-transform: uppercase;
+    transition: border-color var(--t-hizli) ease, color var(--t-hizli) ease;
+  }
+  .sekme:hover { border-color: var(--kiremit-acik); color: #FFF; }
+  .sekme--vurgu { border-color: var(--kiremit); color: #FFF; }
+
+  .bolum-kap { padding-top: 24px; scroll-margin-top: 24px; }
+  #qr-menu { padding-top: 40px; }
+  .bolum { padding: 48px; align-items: center; overflow: hidden; }
+  .metin { grid-column: 1 / span 5; }
+  .metin--sag { grid-column: 9 / span 4; }
+  .metin--genis { grid-column: 1 / span 6; }
+  .no { color: var(--kiremit-acik); margin-right: 12px; }
+  .bolum h2 { margin-top: 2px; font-size: clamp(44px, 4.5vw, 64px); line-height: .95; }
+  .metin > .soluk { margin-top: 20px; max-width: 32rem; }
+  .liste { list-style: none; margin: 28px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .liste li { display: flex; gap: 12px; font-size: 15px; line-height: 1.5; color: #D7D5D0; }
+  .liste li::before { content: ''; flex: none; width: 6px; height: 6px; margin-top: 8px; border-radius: 50%; background: var(--kiremit); }
+
+  .gorsel { grid-column: 7 / span 6; }
+  .gorsel--genis { grid-column: 1 / span 7; }
+  .teller { position: relative; height: 520px; display: flex; justify-content: center; align-items: flex-start; gap: 24px; padding-top: 24px; }
+  .isik { position: absolute; inset: auto -48px -48px; height: 70%; background: radial-gradient(55% 90% at 50% 100%, rgba(217, 72, 43, .75) 0%, rgba(217, 72, 43, 0) 75%); }
+  .tel {
+    position: relative; width: 230px; padding: 6px; border-radius: 32px; background: #050506;
+    border: 1px solid rgba(255, 255, 255, .12); box-shadow: 0 30px 60px -24px rgba(0, 0, 0, .9);
+  }
+  .tel.egik { width: 210px; margin-top: 60px; transform: rotate(-5deg); }
+  .tel :global(img) { width: 100%; height: auto; aspect-ratio: 600 / 1270; object-fit: cover; object-position: top; border-radius: 26px; }
+  .tarayici { border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, .12); box-shadow: 0 30px 60px -24px rgba(0, 0, 0, .8); }
+  .tarayici__ust { height: 30px; background: #2A2D34; display: flex; align-items: center; gap: 6px; padding: 0 12px; }
+  .tarayici__ust span { width: 9px; height: 9px; border-radius: 50%; background: #55585F; }
+  .tarayici :global(img) { width: 100%; height: auto; aspect-ratio: 1440 / 900; object-fit: cover; object-position: top; }
+  .ikili { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .ikili :global(img) { width: 100%; height: 420px; object-fit: cover; border-radius: 14px; }
+
+  .karne {
+    grid-column: 8 / span 5; padding: 32px; border-radius: 16px; border: 1px solid var(--kiremit);
+    background: linear-gradient(160deg, rgba(217, 72, 43, .22), rgba(217, 72, 43, .04));
+  }
+  .karne__ust { color: #F2B4A3; }
+  .karne__baslik { margin-top: 10px; font-size: 48px; line-height: 1; color: #FFF; }
+  .karne__metin { margin-top: 16px; font-size: 15px; color: #E6DCD8; }
+  .karne .btn { margin-top: 24px; }
+
+  .paketler { padding-top: 120px; scroll-margin-top: 24px; }
+  .paketler__baslik { margin-top: 2px; font-size: clamp(56px, 6.7vw, 96px); line-height: .92; }
+  .paketler__not { margin-top: 24px; max-width: 40rem; }
+  .paketler__izgara { margin-top: 40px; align-items: stretch; }
+  .paket { grid-column: span 4; padding: 32px; display: flex; flex-direction: column; gap: 24px; }
+  .paket .liste { margin-top: 0; flex: 1; }
+  .paket .btn { align-self: stretch; }
+  .paket__ad { margin-top: 10px; font-size: 34px; line-height: 1; }
+  .paket__ad.metal { margin-top: 2px; }
+  .paket__fiyat { font-family: var(--font-baslik); font-size: 56px; line-height: 1; }
+  .paket__fiyat.metal { padding-top: 0; }
+  .paket__donem { margin-left: 8px; font: 400 16px var(--font-metin); color: var(--soluk); }
+  .paket--onerilen { border-color: var(--kiremit); box-shadow: inset 0 0 0 1px var(--kiremit); }
+  .paket--onerilen .paket__grup { color: var(--kiremit-acik); }
+  .paket--ozel { background: linear-gradient(110deg, #2B2E35 0%, #5C5F66 45%, #24272D 75%, #1C1E23 100%); }
+  .paket--ozel .paket__grup, .paket--ozel .liste li { color: #D7D5D0; }
+  .btn--cizgi { background: transparent; box-shadow: none; border: 1px solid rgba(255, 255, 255, .3); color: var(--metin); }
+  .btn--cizgi:hover { color: #FFF; border-color: #FFF; filter: none; }
+
+  @media (max-width: 1100px) {
+    .paket { grid-column: span 6; }
+  }
+  @media (max-width: 900px) {
+    .bolum { padding: 28px; row-gap: 32px; }
+    .metin, .metin--sag, .metin--genis, .gorsel, .gorsel--genis, .karne { grid-column: 1 / -1; }
+    .teller { height: 420px; }
+    .tel { width: 170px; }
+    .tel.egik { width: 150px; }
+    .ikili :global(img) { height: 300px; }
+    .paket { grid-column: 1 / -1; }
+  }
+</style>

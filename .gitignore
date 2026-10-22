@@ -18,3 +18,14 @@ __pycache__/
 *.pyc
 node_modules/
 .venv/
+
+# Local working folders (stock video sources, design drafts)
+_hero-video/
+_yeni-tasarim/
+
+# Astro
+dist/
+.astro/
+.vercel/
+.env*
+.vercel

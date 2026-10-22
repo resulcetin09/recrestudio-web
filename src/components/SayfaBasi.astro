@@ -1,0 +1,21 @@
+---
+// Opening block for inner pages: small label, metallic condensed title, short lede.
+interface Props {
+  etiket: string;
+  baslik: string;
+  aciklama?: string;
+}
+const { etiket, baslik, aciklama } = Astro.props;
+---
+<section class="kap sayfa-basi">
+  <p class="ust">{etiket}</p>
+  <h1 class="dar metal">{baslik}</h1>
+  {aciklama && <p class="soluk aciklama">{aciklama}</p>}
+  <slot />
+</section>
+
+<style>
+  .sayfa-basi { padding-block: 72px 48px; }
+  h1 { margin-top: 2px; font-size: clamp(56px, 9vw, 128px); line-height: .92; max-width: 12ch; }
+  .aciklama { margin-top: 28px; max-width: 34rem; font-size: 17px; }
+</style>

@@ -1,0 +1,134 @@
+---
+import { Image } from 'astro:assets';
+import Site from '../layouts/Site.astro';
+import SayfaBasi from '../components/SayfaBasi.astro';
+import Kapanis from '../components/ana/Kapanis.astro';
+import { ISLER, KATEGORILER } from '../data/isler';
+
+const adlar = Object.fromEntries(KATEGORILER.map((k) => [k.kod, k.ad]));
+---
+<Site
+  title="İşler | ReCre Studio"
+  description="ReCre Studio'nun QR menü, web sitesi, marka kimliği ve sosyal medya işleri: Bug Doctor, Karaelmas, Vortika, Deepreo, Bozs ve daha fazlası."
+>
+  <SayfaBasi
+    etiket="İşler"
+    baslik="Seçili işler"
+    aciklama="Menüler, siteler, marka kimlikleri ve sosyal medya. Her biri işletmesine göre katlandı."
+  >
+    <div class="filtreler" role="group" aria-label="Kategoriye göre süz">
+      <button type="button" class="filtre" data-filtre="" aria-pressed="true">Tümü</button>
+      {KATEGORILER.map((k) => <button type="button" class="filtre" data-filtre={k.kod} aria-pressed="false">{k.ad}</button>)}
+    </div>
+  </SayfaBasi>
+
+  <section class="kap iz isler" aria-label="İşler">
+    {ISLER.map((is, sira) => {
+      const Etiket = is.url ? 'a' : 'div';
+      return (
+        <Etiket
+          class:list={['is', `is--${is.genislik}`]}
+          data-kategori={is.kategoriler.join(' ')}
+          {...(is.url ? { href: is.url, target: '_blank', rel: 'noopener' } : {})}
+        >
+          <div
+            class:list={['gorsel', `gorsel--${is.sunum ?? 'kapla'}`]}
+            style={is.sunum === 'tam' ? undefined : `height:${is.yukseklik}px`}
+          >
+            <Image
+              src={is.gorsel}
+              alt={is.alt}
+              widths={is.genislik === 12 ? [800, 1200, 2400] : [400, 800, 1200]}
+              sizes={is.genislik === 12 ? '(max-width: 1240px) 100vw, 1200px' : '(max-width: 900px) 100vw, 800px'}
+              style={is.konum ? `object-position:${is.konum}` : undefined}
+              {...(sira === 0 ? { loading: 'eager', fetchpriority: 'high' } : {})}
+            />
+            {is.url && <span class="ok" aria-hidden="true">↗</span>}
+          </div>
+          <div class="alt">
+            <div>
+              <h2>{is.ad}</h2>
+              <p class="soluk">{is.aciklama}</p>
+            </div>
+            <div class="cipler">{is.kategoriler.map((k) => <span class="cip">{adlar[k]}</span>)}</div>
+          </div>
+        </Etiket>
+      );
+    })}
+  </section>
+
+  <Kapanis baslik="Sıradaki iş seninki olsun" />
+</Site>
+
+<script>
+  // Category filter: progressive enhancement, every work is visible without JS.
+  const butonlar = document.querySelectorAll<HTMLButtonElement>('[data-filtre]');
+  const isler = document.querySelectorAll<HTMLElement>('[data-kategori]');
+  butonlar.forEach((b) =>
+    b.addEventListener('click', () => {
+      const secim = b.dataset.filtre ?? '';
+      butonlar.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      isler.forEach((is) => {
+        is.hidden = secim !== '' && !(is.dataset.kategori ?? '').split(' ').includes(secim);
+      });
+      document.querySelector('.isler')?.classList.toggle('isler--suzulu', secim !== '');
+    }),
+  );
+</script>
+
+<style>
+  .filtreler { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+  .filtre {
+    min-height: 40px; padding: 0 18px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .14);
+    background: transparent; color: #D7D5D0; cursor: pointer;
+    font: 500 13px/1 var(--font-metin); letter-spacing: .1em; text-transform: uppercase;
+    transition: background-color var(--t-hizli) ease, color var(--t-hizli) ease, border-color var(--t-hizli) ease;
+  }
+  .filtre:hover { border-color: var(--kiremit-acik); color: #FFF; }
+  .filtre[aria-pressed='true'] { background: var(--metin); border-color: var(--metin); color: var(--zemin); }
+
+  .isler { padding-top: 40px; row-gap: 56px; }
+  .is { display: flex; flex-direction: column; gap: 18px; text-decoration: none; color: var(--metin); }
+  .is:hover { color: var(--metin); }
+  .is[hidden] { display: none; }
+  .is--4 { grid-column: span 4; }
+  .is--6 { grid-column: span 6; }
+  .is--8 { grid-column: span 8; }
+  .is--12 { grid-column: 1 / -1; }
+  /* when filtered, cards line up in a plain three-column rhythm */
+  .isler--suzulu .is { grid-column: span 4; }
+  .isler--suzulu .gorsel { height: 420px !important; aspect-ratio: auto; }
+
+  .gorsel { position: relative; overflow: hidden; border-radius: 16px; border: 1px solid var(--cizgi); background: var(--panel-alt); }
+  .gorsel :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform 700ms var(--ease-out); }
+  .gorsel--telefon { background: #1E1A17; display: flex; justify-content: center; align-items: flex-end; padding-top: 28px; }
+  .gorsel--telefon :global(img) { width: 62%; height: auto; border-radius: 20px 20px 0 0; }
+  /* full screenshot, never cropped */
+  .gorsel--tam { aspect-ratio: 1440 / 900; }
+  .gorsel--tam :global(img) { object-fit: contain; }
+  .ok {
+    position: absolute; right: 18px; bottom: 18px; width: 48px; height: 48px; border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .4); display: flex; align-items: center; justify-content: center;
+    background: rgba(22, 24, 28, .65); transition: background-color var(--t-orta) ease, border-color var(--t-orta) ease;
+  }
+  @media (hover: hover) {
+    a.is:hover .gorsel--kapla :global(img) { transform: scale(1.03); }
+    a.is:hover .ok { background: var(--kiremit); border-color: var(--kiremit); }
+  }
+  .alt { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+  .alt h2 { font-size: 26px; font-weight: 600; letter-spacing: -.02em; line-height: 1.15; }
+  .alt .soluk { margin-top: 6px; font-size: 14px; }
+  .cipler { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+  .cip {
+    display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px; border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .14); white-space: nowrap;
+    font: 500 11px/1 var(--font-metin); letter-spacing: .1em; text-transform: uppercase; color: #B9BBC1;
+  }
+
+  @media (max-width: 900px) {
+    .is, .isler--suzulu .is { grid-column: 1 / -1; }
+    .gorsel:not(.gorsel--tam) { height: 360px !important; }
+    .alt { flex-direction: column; }
+    .cipler { justify-content: flex-start; }
+  }
+</style>

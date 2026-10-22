@@ -1,0 +1,40 @@
+---
+import Site from '../layouts/Site.astro';
+import Acilis from '../components/ana/Acilis.astro';
+import Kurucu from '../components/ana/Kurucu.astro';
+import Rakamlar from '../components/ana/Rakamlar.astro';
+import SeciliIsler from '../components/ana/SeciliIsler.astro';
+import Hizmetler from '../components/ana/Hizmetler.astro';
+import Surec from '../components/ana/Surec.astro';
+import Sss from '../components/ana/Sss.astro';
+import Kapanis from '../components/ana/Kapanis.astro';
+import { SITE_URL, CONTACT } from '../data/site';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'ReCre Studio',
+  url: `${SITE_URL}/`,
+  image: `${SITE_URL}/og-image-1200x630.png`,
+  logo: `${SITE_URL}/icon-512.png`,
+  description: 'Restoranlar, kafeler ve yerel markalar için QR menü, web sitesi, SEO ve sosyal medya.',
+  email: CONTACT.email,
+  telephone: '+905464616730',
+  areaServed: 'TR',
+  sameAs: [CONTACT.instagram, CONTACT.linkedin],
+};
+---
+<Site
+  title="ReCre Studio | QR menü, web sitesi ve SEO"
+  description="Restoranlar, kafeler ve yerel markalar için QR menü, web sitesi ve SEO. Tasarımdan yayına tek elden."
+  jsonLd={jsonLd}
+>
+  <Acilis />
+  <Kurucu />
+  <Rakamlar />
+  <SeciliIsler />
+  <Hizmetler />
+  <Surec />
+  <Sss />
+  <Kapanis />
+</Site>

@@ -1,0 +1,98 @@
+---
+import Site from '../layouts/Site.astro';
+import SayfaBasi from '../components/SayfaBasi.astro';
+import Kapanis from '../components/ana/Kapanis.astro';
+
+const ilkeler = [
+  ['Tek muhatap', 'Seninle konuşan kişi işi yapan kişi. Mesajın ekipler arasında kaybolmaz.'],
+  ['Önce taslak', 'Koda geçmeden taslağı görürsün. Onayın olmadan bir sonraki adıma geçmeyiz.'],
+  ['Hız bir tasarım kararı', "Menülerimiz Lighthouse'ta 98+ puan alır. Yavaş açılan sayfa müşteri kaybettirir."],
+  ['Markana göre', 'Hazır şablon yok. Renk, yazı ve düzen işletmenin kendi karakterinden çıkar.'],
+];
+---
+<Site
+  title="Hakkımızda | ReCre Studio"
+  description="ReCre Studio; restoran, kafe ve yerel markalar için QR menü, web sitesi, SEO ve sosyal medya işlerini fikirden yayına tek ekip olarak yürütür."
+>
+  <SayfaBasi
+    etiket="Hakkımızda"
+    baslik="Fikri uçuran stüdyo"
+    aciklama="ReCre Studio; restoran, kafe ve yerel markalar için QR menü, web sitesi, SEO ve sosyal medya işlerini fikirden yayına tek ekip olarak yürütür."
+  />
+
+  <section class="kap iz isim">
+    <p class="dar isim__logo" aria-label="ReCre"><span class="isim__re">Re</span><span class="metal">Cre</span></p>
+    <div class="isim__metin">
+      <p class="ust">İsmin anlamı</p>
+      <p class="isim__ana"><b class="re">Re</b>sul + <b>Cre</b>ative. Kurucunun imzasını taşıyan yaratıcı stüdyo.</p>
+      <p class="soluk">İkinci okuması <i lang="en">recreate</i>: var olanı yeniden yaratmak. Sembolümüz kâğıt uçak da bunu anlatır; düz bir kâğıt katlanır ve uçan bir şeye dönüşür. Biz de işletmenin elindekini alıp ekranda uçurmaya çalışıyoruz.</p>
+    </div>
+  </section>
+
+  <section class="kap ilkeler">
+    <h2 class="ust">Nasıl çalışıyoruz</h2>
+    <ol class="iz">
+      {ilkeler.map(([ad, metin], i) => (
+        <li class="panel">
+          <span class="no">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="ust">{ad}</h3>
+          <p class="soluk">{metin}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="kap iz neden">
+    <div class="neden__metin">
+      <p class="ust">Neden yerel işletmeler</p>
+      <h2 class="dar metal">Müşterin seni önce telefonda arıyor</h2>
+      <p class="soluk">Zonguldak'taki 1212 işletmeyi tek tek inceledik. 951'inin kendi web sitesi yok, çoğunun menüsü internette hiç görünmüyor. ReCre bu boşluğu doldurmak için var.</p>
+    </div>
+    <div class="panel neden__rakam">
+      <div><p class="sayi">1212</p><p class="ust">İşletme inceledik</p></div>
+      <div><p class="sayi vurgu">%78</p><p class="ust">Kendi sitesi yok</p></div>
+    </div>
+  </section>
+
+  <Kapanis />
+</Site>
+
+<style>
+  .isim { padding-top: 96px; align-items: center; }
+  /* the name is always written ReCre, never upper-cased (brand rule) */
+  .isim__logo { text-transform: none; grid-column: 1 / span 6; font-size: clamp(120px, 16.7vw, 240px); line-height: .85; display: flex; gap: .03em; }
+  .isim__re { color: var(--kiremit); padding-top: .16em; }
+  .isim__metin { grid-column: 8 / span 5; }
+  .isim__ana { margin-top: 16px; font-size: 22px; line-height: 1.5; }
+  .isim__ana b { font-weight: 600; }
+  .isim__ana .re { color: var(--kiremit-acik); }
+  .isim__metin .soluk { margin-top: 16px; }
+
+  .ilkeler { padding-top: 112px; }
+  .ilkeler h2 { font-weight: 500; margin-bottom: 24px; }
+  .ilkeler ol { list-style: none; margin: 0; padding: 0; }
+  .ilkeler li { grid-column: span 3; padding: 28px; }
+  .no { font: 500 12px var(--font-metin); letter-spacing: .16em; color: var(--kiremit-acik); }
+  .ilkeler h3 { margin-top: 28px; color: var(--metin); font-weight: 500; font-size: 13px; }
+  .ilkeler li .soluk { margin-top: 12px; font-size: 15px; }
+
+  .neden { padding-top: 112px; padding-bottom: 16px; align-items: center; }
+  .neden__metin { grid-column: 1 / span 5; }
+  .neden h2 { margin-top: 2px; font-size: clamp(48px, 5vw, 72px); line-height: .95; }
+  .neden__metin .soluk { margin-top: 24px; }
+  .neden__rakam { grid-column: 7 / span 6; display: grid; grid-template-columns: 1fr 1fr; padding: 36px 0; }
+  .neden__rakam > div { text-align: center; padding: 0 16px; }
+  .neden__rakam > div + div { border-left: 1px solid rgba(255, 255, 255, .08); }
+  .sayi { font-size: 64px; font-weight: 300; line-height: 1; font-variant-numeric: tabular-nums; }
+  .vurgu { color: var(--kiremit-acik); }
+  .neden__rakam .ust { margin-top: 12px; }
+
+  @media (max-width: 1100px) {
+    .ilkeler li { grid-column: span 6; }
+  }
+  @media (max-width: 900px) {
+    .isim__logo, .isim__metin, .neden__metin, .neden__rakam { grid-column: 1 / -1; }
+    .ilkeler li { grid-column: 1 / -1; }
+    .sayi { font-size: 48px; }
+  }
+</style>

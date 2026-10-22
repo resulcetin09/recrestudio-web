@@ -1,0 +1,45 @@
+---
+// Draft information notice under KVKK (Law No. 6698, art. 10). Needs a legal review before launch.
+import Site from '../layouts/Site.astro';
+import SayfaBasi from '../components/SayfaBasi.astro';
+import { CONTACT } from '../data/site';
+---
+<Site
+  title="Aydınlatma metni | ReCre Studio"
+  description="ReCre Studio iletişim ve teklif formu için kişisel verilerin korunması aydınlatma metni."
+>
+  <SayfaBasi etiket="KVKK" baslik="Aydınlatma metni" />
+  <article class="kap metin">
+    <p class="soluk">Bu metin, 6698 sayılı Kişisel Verilerin Korunması Kanunu'nun 10. maddesi uyarınca, recrestudio.dev üzerindeki iletişim ve teklif formunu kullananları bilgilendirmek için hazırlanmıştır.</p>
+
+    <h2>Veri sorumlusu</h2>
+    <p>ReCre Studio (Resul Çetin). İletişim: <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></p>
+
+    <h2>Hangi verileri işliyoruz</h2>
+    <p>Formda paylaştığın ad soyad, işletme adı, telefon numarası ya da e-posta adresi, ilgilendiğin hizmetler, mesajın ve dijital karne talebinde verdiğin Google Haritalar bağlantısı ya da Instagram hesabı.</p>
+
+    <h2>Hangi amaçla</h2>
+    <p>Teklif ya da dijital karne talebine dönmek, ihtiyacını anlamak ve teklif hazırlamak. Verilerini pazarlama listelerine eklemiyor, üçüncü kişilere satmıyoruz.</p>
+
+    <h2>Hukuki sebep</h2>
+    <p>Bir sözleşmenin kurulmasından önce senin talebinle yapılan işlemler (Kanun m. 5/2-c) ve formu gönderirken verdiğin açık rıza.</p>
+
+    <h2>Kimlere aktarılır</h2>
+    <p>Form içeriği, e-posta olarak iletilmek için e-posta altyapı sağlayıcımız (Resend) ve sitenin barındırıldığı Vercel üzerinden geçer. Bu hizmet sağlayıcılarının sunucuları yurt dışında bulunabilir; formu göndererek bu aktarıma açık rıza vermiş olursun.</p>
+
+    <h2>Ne kadar süre saklanır</h2>
+    <p>Talebin sonuçlanana kadar ve sonrasında en fazla bir yıl. Bu sürenin sonunda silinir.</p>
+
+    <h2>Hakların</h2>
+    <p>Kanun'un 11. maddesi uyarınca verilerinin işlenip işlenmediğini öğrenme, bilgi isteme, düzeltilmesini ya da silinmesini isteme ve itiraz etme hakların var. Taleplerini <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a> adresine yazabilirsin.</p>
+  </article>
+</Site>
+
+<style>
+  .metin { padding-bottom: 96px; max-width: min(var(--kap), calc(100% - 2 * var(--kenar))); }
+  .metin > * { max-width: 44rem; }
+  h2 { margin-top: 40px; font: 500 13px/1.4 var(--font-metin); letter-spacing: .16em; text-transform: uppercase; color: var(--metin); }
+  h2 + p { margin-top: 12px; }
+  p { font-size: 16px; color: #D7D5D0; }
+  a { color: var(--metin); }
+</style>

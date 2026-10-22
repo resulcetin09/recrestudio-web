@@ -1,46 +1,54 @@
 # ReCre Studio — Web Sitesi
 
-**Canlı site:** https://recrestudio-web.vercel.app
+**Canlı site:** https://recrestudio.dev
 
-Restoranlar, kafeler ve yerel markalar için dijital QR menü, hızlı web siteleri ve SEO hizmeti veren
-ReCre Studio'nun tanıtım sitesi. Sayfa kaydırıldıkça ilerleyen 3D bir sahne: kahraman obje telefondan
-tarayıcı penceresine, oradan arama sonucuna dönüşerek hizmetleri anlatır.
+Restoranlar, kafeler ve yerel markalar için QR menü, web sitesi, SEO ve sosyal medya hizmeti veren
+ReCre Studio'nun sitesi. Beş sayfa: Ana Sayfa, Hizmetler (paketler ve fiyatlar), İşler, Hakkımızda, İletişim
+(teklif ve ücretsiz dijital karne formu).
 
-![ReCre Studio](og-image-1200x630.png)
+![ReCre Studio](public/og-image-1200x630.png)
 
 ## Teknoloji
 
-- Düz HTML, CSS ve JavaScript (ES modülleri); derleme adımı yok
-- [Three.js](https://threejs.org) — 3D sahne ve `models/hero.glb` modeli
-- [GSAP](https://gsap.com) + ScrollTrigger — kaydırmaya bağlı zaman çizelgesi
-- [Lenis](https://lenis.darkroom.engineering) — yumuşak kaydırma
-- Kütüphaneler `index.html` içindeki import map ile jsDelivr'dan yüklenir
+- [Astro](https://astro.build) 7, statik sayfalar; tarayıcıya giden JavaScript yalnızca menü, filtre ve form için
+- [`@astrojs/vercel`](https://docs.astro.build/en/guides/integrations-guide/vercel/) — iletişim formu tek bir Vercel işlevi (`/api/talep`)
+- [Resend](https://resend.com) — form talebini e-posta olarak iletir
+- Görseller Astro'nun görsel hattında AVIF/WebP'ye çevrilir; yazı tipleri (Anton, Inter) sitenin kendisinden yüklenir
 
 ## Yerelde çalıştırma
 
 ```sh
-python3 -m http.server
+npm install
+npm run dev        # http://localhost:4321
+npm run build      # çıktı: .vercel/output/static (+ form işlevi)
+npm run check      # tip denetimi
 ```
 
-Sonra tarayıcıda http://localhost:8000 adresini aç. Dosyayı doğrudan (`file://`) açmak çalışmaz,
-ES modülleri ve model yüklemesi için bir sunucu gerekir.
+Yerelde `RESEND_API_KEY` yoksa form e-posta göndermez, talebi konsola yazar.
+Adresin sonuna `?izgara` eklenirse 12 sütunluk hiza ızgarası görünür.
 
 ## Yapı
 
 | Yol | İçerik |
 | --- | --- |
-| `index.html` | Sayfa, metinler ve import map |
-| `main.js` | Sahne kurulumu, kamera ve kaydırma zaman çizelgesi |
-| `transitions.js`, `morph.js`, `playhead.js` | Sahne geçişleri ve dönüşümler |
-| `screens.js`, `props.js` | 3D ekranlara canvas ile çizilen içerikler |
-| `ui/` | Ortak marka bileşenleri: renk token'ları, butonlar, yükleyici, ilerleme izi |
-| `style.css` | Sayfa düzeni |
-| `models/`, `assets/`, `fonts/` | 3D model, görseller, Fraunces fontu |
-| `data/projects.json` | "İşler" bölümündeki proje kartları (görseller `assets/isler/`) |
+| `src/pages/` | Sayfalar, `api/talep.ts` (form), `sitemap.xml.ts`, `404.astro` |
+| `src/components/` | Menü, alt bilgi, sayfa başı; `ana/` ana sayfa bölümleri |
+| `src/data/` | Site bilgileri, paketler ve fiyatlar (`paketler.ts`), işler (`isler.ts`) |
+| `src/styles/` | Renk ve yazı değişkenleri (`global.css`), yazı tipleri (`fonts.css`) |
+| `src/fonts/` | Anton ve Inter; Türkçe ek harfler ayrı küçük dosyalarda (nasıl üretildiği `fonts.css`'te) |
+| `src/assets/` | Logo, portre ve iş görselleri |
+| `public/` | Favicon, paylaşım görseli, `robots.txt` |
+| `ui/`, `fonts/` | Eski web kimliği kılavuzunun ortak dosyaları (siteye dahil değil) |
 
 ## Yayın
 
-`main` dalına yapılan her push Vercel'de otomatik olarak yayınlanır.
+`main` dalına yapılan her push Vercel'de otomatik olarak yayınlanır. Vercel ortam değişkenleri:
+
+| Değişken | Gerekli | Açıklama |
+| --- | --- | --- |
+| `RESEND_API_KEY` | Evet | Form e-postası için |
+| `TALEP_ALICI` | Hayır | Talebin gideceği adres (varsayılan recrestudio0@gmail.com) |
+| `TALEP_GONDEREN` | Hayır | Gönderen (varsayılan `ReCre Site <site@recrestudio.dev>`) |
 
 ## İletişim
 
@@ -48,5 +56,5 @@ recrestudio0@gmail.com · Instagram [@recre_studio](https://instagram.com/recre_
 
 ## Lisans
 
-Kod ve marka varlıkları (logo, görseller, 3D model) ReCre Studio'ya aittir; tüm hakları saklıdır.
-Fraunces fontu SIL Open Font License ile dağıtılır (`fonts/OFL-Fraunces.txt`).
+Kod ve marka varlıkları (logo, görseller) ReCre Studio'ya aittir; tüm hakları saklıdır.
+Anton ve Inter yazı tipleri SIL Open Font License ile dağıtılır.

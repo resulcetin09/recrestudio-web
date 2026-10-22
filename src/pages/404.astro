@@ -1,0 +1,16 @@
+---
+import Site from '../layouts/Site.astro';
+import SayfaBasi from '../components/SayfaBasi.astro';
+---
+<Site title="Sayfa bulunamadı | ReCre Studio" description="Aradığın sayfa bulunamadı.">
+  <SayfaBasi etiket="404" baslik="Bu sayfa uçup gitmiş" aciklama="Aradığın sayfa taşınmış ya da hiç olmamış olabilir.">
+    <div class="eylem">
+      <a class="btn" href="/">Ana sayfaya dön <span class="ok" aria-hidden="true">↗</span></a>
+      <a class="yazi-link" href="/iletisim">İletişim</a>
+    </div>
+  </SayfaBasi>
+</Site>
+
+<style>
+  .eylem { display: flex; flex-wrap: wrap; align-items: center; gap: 28px; margin-top: 36px; padding-bottom: 96px; }
+</style>

@@ -1,0 +1,14 @@
+# Only the Astro source goes to Vercel; internal folders stay local.
+# Anchored with "/" so they do not also match src/fonts and the like.
+/docs/
+/tools/
+/videolar/
+/kilavuz/
+/ui/
+/fonts/
+/_hero-video/
+/_yeni-tasarim/
+/dist/
+/.astro/
+.env*
+.DS_Store

@@ -1,0 +1,58 @@
+---
+const sorular = [
+  ['Müşterinin uygulama indirmesi gerekiyor mu?', 'Hayır. Telefon kamerasıyla QR kodu okutması yeterli, menü tarayıcıda açılır.'],
+  ['Fiyatları kendim değiştirebilir miyim?', 'Evet. Sana verdiğimiz panelden fiyat, ürün ve fotoğrafları değiştirirsin; kaydettiğin an menü güncellenir.'],
+  ['Menü İngilizce de olabilir mi?', 'Evet. Menü Türkçe ve İngilizce hazırlanır, müşteri tek dokunuşla dili değiştirir.'],
+  ["Google Haritalar'da üstte çıkmama yardım eder misiniz?", 'Evet. Google İşletme Profilini düzenliyor, siteni ve menünü hızlı ve aranabilir kuruyoruz. Sıralama sözü vermiyoruz; görünürlüğü artıran işleri yapıyoruz.'],
+  ['Sadece Instagram yönetimi alabilir miyim?', 'Evet. Gönderi, Reels ve hikâye tasarımı ayrı bir hizmet olarak da alınabilir.'],
+];
+---
+<section class="kap iz sss">
+  <div class="sol">
+    <p class="ust">Sık sorulanlar</p>
+    <h2 class="dar metal">Aklındaki<br />sorular</h2>
+    <p class="soluk not">Burada olmayan bir şey mi var? <a href="/iletisim">Yaz</a>, birlikte bakalım.</p>
+  </div>
+  <div class="panel sag">
+    {sorular.map(([soru, cevap], i) => (
+      <details open={i === 0}>
+        <summary>{soru}<span class="isaret" aria-hidden="true"></span></summary>
+        <p class="soluk">{cevap}</p>
+      </details>
+    ))}
+  </div>
+</section>
+
+<style>
+  .sss { padding-top: 96px; align-items: start; }
+  .sol { grid-column: 1 / span 4; }
+  h2 { margin-top: 2px; font-size: clamp(48px, 5vw, 72px); line-height: .95; }
+  .not { margin-top: 24px; max-width: 22rem; font-size: 15px; }
+  .not a { color: var(--metin); }
+  .sag { grid-column: 6 / span 7; overflow: hidden; }
+  details + details { border-top: 1px solid rgba(255, 255, 255, .08); }
+  summary {
+    list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 24px;
+    padding: 22px 28px; font-size: 17px; font-weight: 500;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { color: #FFF; }
+  .isaret {
+    flex: none; position: relative; width: 30px; height: 30px; border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .3);
+    transition: background-color var(--t-orta) ease, border-color var(--t-orta) ease;
+  }
+  .isaret::before, .isaret::after {
+    content: ''; position: absolute; left: 50%; top: 50%; width: 11px; height: 1.5px; background: var(--metin);
+    transform: translate(-50%, -50%); transition: transform var(--t-orta) var(--ease-out);
+  }
+  .isaret::after { transform: translate(-50%, -50%) rotate(90deg); }
+  details[open] .isaret { background: var(--kiremit); border-color: var(--kiremit); }
+  details[open] .isaret::after { transform: translate(-50%, -50%) rotate(0deg); }
+  details > p { padding: 0 28px 24px; font-size: 15px; max-width: 42rem; }
+  @media (max-width: 900px) {
+    .sol, .sag { grid-column: 1 / -1; }
+    summary { padding: 20px; font-size: 16px; }
+    details > p { padding: 0 20px 22px; }
+  }
+</style>

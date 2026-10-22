@@ -1,0 +1,249 @@
+---
+import Site from '../layouts/Site.astro';
+import SayfaBasi from '../components/SayfaBasi.astro';
+import { CONTACT } from '../data/site';
+import { TALEP_HIZMETLERI } from '../data/paketler';
+
+const kanallar = [
+  { ad: 'WhatsApp', deger: CONTACT.phoneDisplay, href: CONTACT.whatsapp, dis: true },
+  { ad: 'E-posta', deger: CONTACT.email, href: `mailto:${CONTACT.email}`, dis: false },
+  { ad: 'Instagram', deger: CONTACT.instagramHandle, href: CONTACT.instagram, dis: true },
+  { ad: 'LinkedIn', deger: 'Resul Çetin', href: CONTACT.linkedin, dis: true },
+];
+const adimlar = [
+  'Talebin bize ulaşır.',
+  'Seni arar ya da yazarız, ihtiyacını dinleriz.',
+  'Kapsamı ve fiyatı netleştirip teklifi göndeririz.',
+];
+---
+<Site
+  title="İletişim | ReCre Studio"
+  description="ReCre Studio'dan teklif al ya da işletmenin ücretsiz dijital karnesini iste. WhatsApp, e-posta, Instagram ve LinkedIn."
+>
+  <SayfaBasi
+    etiket="İletişim"
+    baslik="Projeni konuşalım"
+    aciklama="Formu doldur ya da doğrudan yaz. Teklif ve ücretsiz dijital karne talepleri aynı yerden."
+  />
+
+  <section class="kap iz iletisim">
+    <form class="panel form" method="post" action="/api/talep" data-form novalidate>
+      <div class="sekmeler" role="radiogroup" aria-label="Talep türü">
+        <label class="sekme"><input type="radio" name="tur" value="teklif" checked /><span>Teklif al</span></label>
+        <label class="sekme sekme--karne"><input type="radio" name="tur" value="karne" /><span>Ücretsiz dijital karne</span></label>
+      </div>
+
+      <p class="karne-not" data-karne>İşletmenin Google'da, haritada ve web'de nasıl göründüğünü tek sayfada çıkarıp sana gönderiyoruz. Ücretsiz, bağlayıcı değil.</p>
+
+      <div class="ikili">
+        <div class="alan">
+          <label for="f-ad">Adın</label>
+          <input class="girdi" id="f-ad" name="ad" autocomplete="name" required maxlength="80" placeholder="Adın soyadın" />
+        </div>
+        <div class="alan">
+          <label for="f-isletme">İşletmenin adı</label>
+          <input class="girdi" id="f-isletme" name="isletme" autocomplete="organization" required maxlength="120" placeholder="Örn. Bozs Cafe & Bistro" />
+        </div>
+      </div>
+      <div class="alan">
+        <label for="f-iletisim">Telefon ya da e-posta</label>
+        <input class="girdi" id="f-iletisim" name="iletisim" required maxlength="120" placeholder="Sana nasıl dönelim?" />
+      </div>
+
+      <fieldset class="alan" data-teklif>
+        <legend>Ne lazım?</legend>
+        <div class="cipler">
+          {TALEP_HIZMETLERI.map((h) => (
+            <label class="cip"><input type="checkbox" name="hizmet" value={h.kod} /><span>{h.ad}</span></label>
+          ))}
+        </div>
+      </fieldset>
+      <div class="alan" data-teklif>
+        <label for="f-mesaj">Mesajın</label>
+        <textarea class="girdi" id="f-mesaj" name="mesaj" maxlength="2000" placeholder="İşletmeni ve aklındakini birkaç cümleyle anlat."></textarea>
+      </div>
+      <div class="alan" data-karne>
+        <label for="f-harita">Google Haritalar bağlantısı ya da Instagram hesabı</label>
+        <input class="girdi" id="f-harita" name="harita" maxlength="300" placeholder="maps.app.goo.gl/… ya da @isletmen" />
+      </div>
+
+      <!-- honeypot: real people never see or fill this -->
+      <div class="tuzak" aria-hidden="true">
+        <label for="f-web">Web siteniz</label>
+        <input id="f-web" name="web" tabindex="-1" autocomplete="off" />
+      </div>
+      <input type="hidden" name="baslangic" value="" data-baslangic />
+
+      <label class="onay" for="f-kvkk">
+        <input type="checkbox" id="f-kvkk" name="kvkk" value="evet" required />
+        <span><a href="/kvkk" target="_blank">Aydınlatma metnini</a> okudum; talebim için bana dönülmesini kabul ediyorum.</span>
+      </label>
+
+      <p class="durum" role="status" aria-live="polite" data-durum></p>
+      <button type="submit" class="btn btn--lg gonder" data-gonder>
+        <span data-gonder-yazi>Teklif iste</span> <span class="ok" aria-hidden="true">↗</span>
+      </button>
+    </form>
+
+    <aside class="yan">
+      <ul class="panel kanallar">
+        {kanallar.map((k) => (
+          <li>
+            <a class="kanal" href={k.href} {...(k.dis ? { target: '_blank', rel: 'noopener' } : {})}>
+              <span><span class="ust" lang={k.ad === 'E-posta' || k.ad === 'WhatsApp' ? undefined : 'en'}>{k.ad}</span><span class="kanal__deger">{k.deger}</span></span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="panel sonra">
+        <h2 class="ust">Sonra ne olur?</h2>
+        <ol>
+          {adimlar.map((a, i) => <li><span class="no">{String(i + 1).padStart(2, '0')}</span><span>{a}</span></li>)}
+        </ol>
+      </div>
+    </aside>
+  </section>
+</Site>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-form]');
+  if (form) {
+    const durum = form.querySelector<HTMLElement>('[data-durum]')!;
+    const gonder = form.querySelector<HTMLButtonElement>('[data-gonder]')!;
+    const gonderYazi = form.querySelector<HTMLElement>('[data-gonder-yazi]')!;
+    const baslangic = form.querySelector<HTMLInputElement>('[data-baslangic]')!;
+    baslangic.value = String(Date.now());
+
+    const mod = () => (new FormData(form).get('tur') === 'karne' ? 'karne' : 'teklif');
+    const uygula = () => {
+      const karne = mod() === 'karne';
+      form.classList.toggle('form--karne', karne);
+      form.querySelectorAll<HTMLElement>('[data-karne]').forEach((el) => (el.hidden = !karne));
+      form.querySelectorAll<HTMLElement>('[data-teklif]').forEach((el) => (el.hidden = karne));
+      gonderYazi.textContent = karne ? 'Karnemi iste' : 'Teklif iste';
+    };
+
+    // Preselect from links such as /iletisim?tur=karne or /iletisim?paket=profesyonel-menu
+    const q = new URLSearchParams(location.search);
+    if (q.get('tur') === 'karne') form.querySelector<HTMLInputElement>('input[name="tur"][value="karne"]')!.checked = true;
+    const paket = q.get('paket');
+    if (paket) {
+      const kutu = form.querySelector<HTMLInputElement>(`input[name="hizmet"][value="${CSS.escape(paket)}"]`);
+      if (kutu) kutu.checked = true;
+    }
+    if (q.has('hata')) {
+      durum.textContent = 'Talep gönderilemedi. WhatsApp ya da e-postadan da yazabilirsin.';
+      durum.dataset.tur = 'hata';
+    }
+    if (q.has('gonderildi')) {
+      durum.textContent = 'Teşekkürler, talebin bize ulaştı. Sana dönüyoruz.';
+      durum.dataset.tur = 'tamam';
+    }
+    uygula();
+    form.querySelectorAll('input[name="tur"]').forEach((r) => r.addEventListener('change', uygula));
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      durum.textContent = '';
+      delete durum.dataset.tur;
+      if (!form.checkValidity()) {
+        const ilk = form.querySelector<HTMLInputElement>(':invalid');
+        durum.textContent = ilk?.name === 'kvkk' ? 'Devam etmek için aydınlatma metnini onaylaman gerekiyor.' : 'Lütfen işaretli alanları doldur.';
+        durum.dataset.tur = 'hata';
+        form.classList.add('form--denendi');
+        ilk?.focus();
+        return;
+      }
+      gonder.disabled = true;
+      gonder.setAttribute('aria-busy', 'true');
+      try {
+        const yanit = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { accept: 'application/json' } });
+        const veri = await yanit.json().catch(() => ({}));
+        if (!yanit.ok) throw new Error(veri.hata || 'Gönderilemedi');
+        form.reset();
+        baslangic.value = String(Date.now());
+        uygula();
+        durum.textContent = mod() === 'karne' ? 'Teşekkürler, karne talebin bize ulaştı.' : 'Teşekkürler, talebin bize ulaştı. Sana dönüyoruz.';
+        durum.dataset.tur = 'tamam';
+      } catch (hata) {
+        durum.textContent = `${(hata as Error).message}. WhatsApp ya da e-postadan da yazabilirsin.`;
+        durum.dataset.tur = 'hata';
+      } finally {
+        gonder.disabled = false;
+        gonder.removeAttribute('aria-busy');
+      }
+    });
+  }
+</script>
+
+<style>
+  .iletisim { padding-top: 16px; padding-bottom: 96px; align-items: start; }
+  .form { grid-column: 1 / span 7; padding: 36px; display: flex; flex-direction: column; gap: 22px; }
+  .yan { grid-column: 9 / span 4; display: flex; flex-direction: column; gap: 24px; }
+
+  .sekmeler { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 6px; border-radius: 12px; background: var(--zemin); border: 1px solid rgba(255, 255, 255, .08); }
+  .sekme { position: relative; }
+  .sekme input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .sekme span {
+    display: flex; align-items: center; justify-content: center; min-height: 46px; border-radius: 8px; text-align: center;
+    color: #B9BBC1; font: 500 13px/1.2 var(--font-metin); letter-spacing: .12em; text-transform: uppercase;
+    transition: background-color var(--t-hizli) ease, color var(--t-hizli) ease;
+  }
+  .sekme input:checked + span { background: var(--metin); color: var(--zemin); }
+  .sekme--karne input:checked + span { background: var(--kiremit); color: #FFF; }
+  .sekme input:focus-visible + span { outline: 2px solid var(--kiremit-acik); outline-offset: 2px; }
+  .karne-not { font-size: 15px; color: #E6DCD8; }
+
+  .ikili { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .alan { margin: 0; padding: 0; border: 0; min-width: 0; }
+  .alan label, .alan legend { display: block; margin-bottom: 8px; padding: 0; font-size: 13px; color: #C9CBD0; }
+  .girdi {
+    width: 100%; min-height: 52px; padding: 0 16px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, .14);
+    background: var(--zemin); color: var(--metin); font: 400 16px var(--font-metin);
+  }
+  textarea.girdi { min-height: 120px; padding: 14px 16px; resize: vertical; }
+  .girdi::placeholder { color: #7E8188; }
+  .girdi:focus { outline: 2px solid var(--kiremit-acik); outline-offset: 1px; border-color: transparent; }
+  .form--denendi .girdi:invalid { border-color: #F08A6C; }
+
+  .cipler { display: flex; flex-wrap: wrap; gap: 8px; }
+  .cip { position: relative; }
+  .cip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .cip span {
+    display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .16); color: #D7D5D0; font-size: 14px;
+    transition: background-color var(--t-hizli) ease, border-color var(--t-hizli) ease, color var(--t-hizli) ease;
+  }
+  .cip input:checked + span { background: rgba(217, 72, 43, .18); border-color: var(--kiremit); color: #FFF; }
+  .cip input:focus-visible + span { outline: 2px solid var(--kiremit-acik); outline-offset: 2px; }
+
+  .tuzak { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .onay { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.5; color: #C9CBD0; cursor: pointer; }
+  .onay input { flex: none; width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--kiremit); }
+  .onay a { color: var(--metin); }
+  .durum:empty { display: none; }
+  .durum { padding: 14px 16px; border-radius: 10px; font-size: 15px; }
+  .durum[data-tur='tamam'] { background: rgba(120, 190, 140, .12); border: 1px solid rgba(120, 190, 140, .5); color: #CDEBD5; }
+  .durum[data-tur='hata'] { background: rgba(217, 72, 43, .12); border: 1px solid rgba(240, 138, 108, .6); color: #F7D2C7; }
+  .gonder { width: 100%; }
+  .gonder[disabled] { opacity: .6; cursor: progress; }
+
+  .kanallar { list-style: none; margin: 0; padding: 0; overflow: hidden; }
+  .kanallar li + li { border-top: 1px solid rgba(255, 255, 255, .08); }
+  .kanal { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 22px; text-decoration: none; color: var(--metin); }
+  .kanal:hover { color: #FFF; background: rgba(255, 255, 255, .03); }
+  .kanal .ust { display: block; }
+  .kanal__deger { display: block; margin-top: 6px; font-size: 16px; overflow-wrap: anywhere; }
+  .sonra { padding: 28px; }
+  .sonra h2 { font-weight: 500; margin-bottom: 18px; }
+  .sonra ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; font-size: 15px; line-height: 1.5; }
+  .sonra li { display: flex; gap: 14px; }
+  .no { color: var(--kiremit-acik); font: 500 12px/1.9 var(--font-metin); letter-spacing: .16em; }
+
+  @media (max-width: 900px) {
+    .form, .yan { grid-column: 1 / -1; }
+    .form { padding: 22px; }
+    .ikili { grid-template-columns: 1fr; }
+  }
+</style>

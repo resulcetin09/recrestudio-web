@@ -1,0 +1,138 @@
+/* ReCre Studio site v2: tokens, base and shared primitives.
+   Decisions: docs/superpowers/specs/2026-09-30-recre-web-kimligi-design.md ("Sürüm 2").
+   Alignment rule: every section sits inside .kap; the logo's left edge and the header
+   button's right edge are the .kap edges (12 columns, 24px gap). */
+
+:root {
+  --zemin: #16181C;
+  --zemin-ust: #24272D;
+  --panel-ust: #22252B;
+  --panel-alt: #1C1E23;
+  --cizgi: rgba(255, 255, 255, 0.09);
+  --cizgi-soluk: rgba(255, 255, 255, 0.07);
+  --metin: #ECEAE6;
+  --soluk: #A4A6AC;
+  --etiket: #9A9CA3;
+  --kiremit: #D9482B;
+  --kiremit-acik: #E98B72;
+
+  --font-baslik: "Anton", Impact, "Arial Narrow", sans-serif;
+  --font-metin: "Inter Variable", Inter, system-ui, -apple-system, sans-serif;
+
+  --kap: 1200px;
+  --kenar: 20px;
+  --aralik: 24px;
+  --nav-h: 80px;
+
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --t-hizli: 200ms;
+  --t-orta: 450ms;
+  --t-yavas: 900ms;
+
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--zemin);
+  color: var(--metin);
+  font-family: var(--font-metin);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img, svg, video { display: block; max-width: 100%; }
+a { color: inherit; }
+a:hover { color: var(--kiremit-acik); }
+:focus-visible { outline: 2px solid var(--kiremit-acik); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3, p { margin: 0; }
+
+.atla {
+  position: absolute; left: var(--kenar); top: -100px; z-index: 100;
+  padding: 10px 16px; border-radius: 6px; background: var(--metin); color: var(--zemin); text-decoration: none;
+}
+.atla:focus { top: 12px; }
+
+/* ---------- layout ---------- */
+.kap {
+  width: min(var(--kap), calc(100% - 2 * var(--kenar)));
+  margin-inline: auto;
+}
+.iz {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--aralik);
+}
+
+/* ---------- type ---------- */
+.dar {
+  font-family: var(--font-baslik);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .005em;
+  text-wrap: balance;
+}
+.metal {
+  background: linear-gradient(180deg, #FBFAF7 0%, #D9D7D2 38%, #8F9198 72%, #C9C8C4 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* the gradient only paints inside the box: make room for the dot of İ and the breve of Ğ */
+  padding-top: .16em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+.ust {
+  font: 500 12px/1.4 var(--font-metin);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--etiket);
+}
+.soluk { color: var(--soluk); }
+
+/* ---------- surfaces ---------- */
+.panel {
+  background: linear-gradient(180deg, var(--panel-ust), var(--panel-alt));
+  border: 1px solid var(--cizgi);
+  border-radius: 16px;
+}
+
+/* ---------- buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  min-height: 48px; padding: 0 22px; border: 0; border-radius: 6px;
+  background: linear-gradient(180deg, #F4F2EE, #C9C8C3);
+  box-shadow: inset 0 1px 0 #FFF;
+  color: var(--zemin);
+  font: 600 13px/1 var(--font-metin); letter-spacing: .12em; text-transform: uppercase;
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+  transition: filter var(--t-hizli) ease, transform var(--t-hizli) var(--ease-out);
+}
+.btn:hover { color: var(--zemin); filter: brightness(1.06); }
+.btn:active { transform: scale(.98); }
+.btn--lg { min-height: 56px; padding: 0 28px; }
+.btn--hap { border-radius: 999px; min-height: 44px; }
+.btn .ok { transition: transform var(--t-orta) var(--ease-out); }
+.btn:hover .ok { transform: translate(2px, -2px); }
+
+.yazi-link {
+  font: 600 13px/1 var(--font-metin); letter-spacing: .12em; text-transform: uppercase;
+  text-decoration: none; color: var(--metin);
+  padding-block: 8px;
+}
+
+/* ---------- alignment overlay: add ?izgara to any URL ---------- */
+.izgara-katman { display: none; }
+.izgara-acik .izgara-katman {
+  display: grid; position: fixed; inset: 0 0 0 0; z-index: 90; pointer-events: none;
+  height: 100vh;
+}
+.izgara-katman span { background: rgba(217, 72, 43, .12); border-inline: 1px solid rgba(217, 72, 43, .35); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

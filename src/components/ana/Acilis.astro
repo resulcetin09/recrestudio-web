@@ -1,0 +1,118 @@
+---
+// Home opening: headline with the kiremit "ekrana" box, then the three services side by side
+// (a website in a browser, a QR menu and an Instagram profile) in front of outlined giant type.
+import { Image } from 'astro:assets';
+import veil from '../../assets/isler/veil.png';
+import bozsKaranlik from '../../assets/isler/bozs-karanlik.png';
+import deepreoProfil from '../../assets/isler/deepreo-profil.png';
+
+const telSizes = '(max-width: 900px) 150px, 200px';
+---
+<section class="kap acilis">
+  <p class="ust giris g1">Restoranlar ve kafeler için dijital vitrin</p>
+  <h1 class="dar giris g2">
+    <span class="metal">Markanı</span>{' '}<span class="kutu">ekrana</span><br />
+    <span class="metal">taşıyoruz</span>
+  </h1>
+  <p class="soluk lede giris g3">QR menü, web sitesi ve SEO. Hızlı açılan, iki dilli, panelden yönetilen işler.</p>
+  <div class="eylem giris g4">
+    <a class="btn btn--lg" href="/iletisim">Teklif al <span class="ok" aria-hidden="true">↗</span></a>
+    <a class="yazi-link" href="#isler">İşleri gör <span aria-hidden="true">↓</span></a>
+  </div>
+</section>
+
+<section class="kap vitrin" aria-label="Web sitesi, QR menü ve sosyal medya örnekleri">
+  <div class="isik" aria-hidden="true"></div>
+  <p class="dar dev-yazi" aria-hidden="true">QR menü · web · SEO</p>
+  <div class="sahne">
+    <div class="tarayici">
+      <div class="tarayici__ust" aria-hidden="true"><span></span><span></span><span></span></div>
+      <Image src={veil} alt="Veil web sitesi" widths={[680, 1360]} sizes="(max-width: 900px) 92vw, 680px" loading="eager" />
+    </div>
+    <div class="tel sol"><Image src={bozsKaranlik} alt="Bozs Cafe & Bistro QR menüsü" widths={[200, 400]} sizes={telSizes} /></div>
+    <div class="tel sag"><Image src={deepreoProfil} alt="Deepreo Instagram profili" widths={[200, 400]} sizes={telSizes} /></div>
+  </div>
+  <div class="cam yuzen sol-kart">
+    <p class="buyuk-rakam">98+</p>
+    <p class="ust"><span lang="en">Lighthouse</span> performans puanı</p>
+  </div>
+  <div class="cam yuzen sag-kart">
+    <p class="buyuk-rakam">TR / EN</p>
+    <p class="ust">İki dilde menü ve site</p>
+  </div>
+</section>
+
+<style>
+  .acilis { padding-top: 64px; text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .acilis .ust { margin-bottom: 22px; }
+  h1 { font-size: clamp(60px, 8.6vw, 124px); line-height: .95; }
+  .kutu {
+    display: inline-block; background: var(--kiremit); color: #FFF;
+    padding: .02em .16em .04em; border-radius: .08em; transform: rotate(-2deg);
+  }
+  .lede { margin-top: 28px; max-width: 32rem; font-size: 17px; }
+  .eylem { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 28px; margin-top: 36px; }
+
+  .vitrin { position: relative; height: 620px; margin-top: 48px; overflow: hidden; }
+  .isik {
+    position: absolute; inset: auto 0 0 0; height: 80%;
+    background: radial-gradient(58% 90% at 50% 100%, rgba(217, 72, 43, .92) 0%, rgba(217, 72, 43, .5) 38%, rgba(217, 72, 43, 0) 75%);
+  }
+  .dev-yazi {
+    position: absolute; left: 50%; top: 130px; transform: translateX(-50%);
+    font-size: 240px; line-height: 1; white-space: nowrap; text-wrap: nowrap;
+    color: transparent; -webkit-text-stroke: 1.5px rgba(236, 234, 230, .2);
+  }
+  .sahne { position: absolute; inset: 80px 0 0; }
+  .tarayici {
+    position: relative; width: min(680px, 92%); margin-inline: auto;
+    border-radius: 14px; overflow: hidden; border: 1px solid rgba(255, 255, 255, .14); background: #0C0D10;
+    box-shadow: 0 50px 100px -40px rgba(0, 0, 0, .95);
+  }
+  .tarayici__ust { height: 30px; background: #24272D; display: flex; align-items: center; gap: 6px; padding: 0 12px; }
+  .tarayici__ust span { width: 9px; height: 9px; border-radius: 50%; background: #55585F; }
+  .tarayici :global(img) { width: 100%; height: auto; aspect-ratio: 1440 / 900; object-fit: cover; object-position: top; }
+  .tel {
+    position: absolute; top: 80px; width: 200px; padding: 7px; border-radius: 38px;
+    background: #050506; border: 1px solid rgba(255, 255, 255, .12); box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .9);
+  }
+  .tel :global(img) { width: 100%; height: auto; aspect-ratio: 600 / 1270; object-fit: cover; object-position: top; border-radius: 31px; }
+  .sol { left: calc(50% - 470px); transform: rotate(-6deg); }
+  .sag { right: calc(50% - 470px); transform: rotate(6deg); }
+
+  .cam {
+    background: rgba(22, 24, 28, .72); border: 1px solid rgba(255, 255, 255, .1); border-radius: 16px;
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  }
+  /* top corners: the devices fill the lower half */
+  .yuzen { position: absolute; top: 24px; width: 250px; padding: 20px; }
+  .sol-kart { left: 0; }
+  .sag-kart { right: 0; }
+  .buyuk-rakam { font-size: 44px; font-weight: 300; line-height: 1; }
+  .yuzen .ust { margin-top: 10px; }
+
+  /* entry: one orchestrated rise, then the devices */
+  @media (prefers-reduced-motion: no-preference) {
+    .giris { animation: yuksel var(--t-yavas) var(--ease-out) backwards; }
+    .g2 { animation-delay: 80ms; }
+    .g3 { animation-delay: 180ms; }
+    .g4 { animation-delay: 260ms; }
+    /* transform only: the browser screenshot is the LCP element, so it must not start transparent */
+    .sahne { animation: kay 1100ms var(--ease-out) 200ms backwards; }
+    .yuzen { animation: belir 700ms var(--ease-out) 900ms backwards; }
+  }
+  @keyframes yuksel { from { opacity: 0; transform: translateY(20px); } }
+  @keyframes belir { from { opacity: 0; } }
+  @keyframes kay { from { transform: translateY(28px); } }
+
+  @media (max-width: 900px) {
+    .vitrin { height: 440px; }
+    .sahne { inset: 56px 0 0; }
+    .tel { width: 128px; top: 120px; padding: 5px; border-radius: 26px; }
+    .tel :global(img) { border-radius: 21px; }
+    .sol { left: -12px; }
+    .sag { right: -12px; }
+    .yuzen { display: none; }
+    .dev-yazi { font-size: 96px; top: 150px; }
+  }
+</style>

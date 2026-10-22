@@ -1,0 +1,28 @@
+---
+const adimlar = [
+  ['Tanışma', 'İşletmeni ve ihtiyacını dinliyoruz.'],
+  ['Tasarım', 'Taslak hazırlıyoruz, onayınla ilerliyoruz.'],
+  ['Yayın', 'Kurulum, alan adı, QR baskısı.'],
+  ['Destek', 'Yayından sonra da yanındayız.'],
+];
+---
+<section class="kap surec">
+  <h2 class="ust">Süreç</h2>
+  <ol class="panel">
+    {adimlar.map(([ad, metin], i) => (
+      <li>
+        <p class="ust"><span class="no">{String(i + 1).padStart(2, '0')}</span>{ad}</p>
+        <p class="soluk">{metin}</p>
+      </li>
+    ))}
+  </ol>
+</section>
+
+<style>
+  .surec { padding-top: 96px; }
+  h2 { font-weight: 500; margin-bottom: 24px; }
+  ol { list-style: none; margin: 0; padding: 32px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+  .no { color: var(--kiremit-acik); margin-right: 12px; }
+  li .soluk { margin-top: 12px; font-size: 14px; }
+  @media (max-width: 900px) { ol { grid-template-columns: 1fr; gap: 24px; } }
+</style>

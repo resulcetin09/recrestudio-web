@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import bozsKaranlik from '../../assets/isler/bozs-karanlik.png';
+import karaelmas from '../../assets/isler/karaelmas.png';
+import portfolyo from '../../assets/isler/portfolyo-3d.jpg';
+---
+<section class="kap secili" id="isler">
+  <div class="ust-satir">
+    <h2 class="ust">Seçili işler</h2>
+    <a class="ust tum" href="/isler">Tüm işler →</a>
+  </div>
+  <div class="iz kartlar">
+    <a class="panel kart" href="https://bozs-dijital-menu.vercel.app" target="_blank" rel="noopener">
+      <Image src={bozsKaranlik} alt="" widths={[260, 520]} sizes="260px" class="egik" />
+      <div class="perde yatay" aria-hidden="true"></div>
+      <div class="yazi"><h3>Bozs Cafe<br />&amp; Bistro</h3><p class="ust">QR menü · TR / EN</p></div>
+      <span class="yuvarlak-ok" aria-hidden="true">↗</span>
+    </a>
+    <a class="panel kart" href="/isler">
+      <Image src={karaelmas} alt="" widths={[400, 800]} sizes="(max-width: 900px) 100vw, 400px" class="dolu" />
+      <div class="perde dikey" aria-hidden="true"></div>
+      <div class="yazi"><h3>Karaelmas<br />Yazılım Topluluğu</h3><p class="ust">Marka kimliği · sosyal medya</p></div>
+      <span class="yuvarlak-ok" aria-hidden="true">↗</span>
+    </a>
+    <a class="panel kart" href="https://my-portfolio-main-drab.vercel.app" target="_blank" rel="noopener">
+      <Image src={portfolyo} alt="" widths={[400, 800]} sizes="(max-width: 900px) 100vw, 400px" class="dolu" />
+      <div class="perde dikey-alt" aria-hidden="true"></div>
+      <div class="yazi"><h3>3D portfolyo<br />sitesi</h3><p class="ust">Web sitesi</p></div>
+      <span class="yuvarlak-ok" aria-hidden="true">↗</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .secili { padding-top: 96px; scroll-margin-top: 24px; }
+  .ust-satir { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 24px; }
+  .ust-satir h2 { font-weight: 500; }
+  .tum { color: var(--metin); text-decoration: none; }
+  .kart { grid-column: span 4; height: 400px; position: relative; overflow: hidden; text-decoration: none; color: var(--metin); }
+  .kart :global(img) { transition: transform 700ms var(--ease-out); }
+  .kart :global(.dolu) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .kart :global(.egik) { position: absolute; right: -30px; top: 40px; width: 62%; height: auto; border-radius: 18px; transform: rotate(8deg); }
+  .perde { position: absolute; inset: 0; }
+  .yatay { background: linear-gradient(90deg, rgba(22, 24, 28, .95) 30%, rgba(22, 24, 28, 0) 75%); }
+  .dikey { background: linear-gradient(180deg, rgba(22, 24, 28, .2) 0%, rgba(22, 24, 28, .92) 100%); }
+  .dikey-alt { background: linear-gradient(180deg, rgba(22, 24, 28, 0) 15%, rgba(22, 24, 28, .7) 50%, rgba(22, 24, 28, .97) 80%); }
+  .yazi { position: absolute; left: 28px; right: 96px; bottom: 28px; }
+  h3 { font-size: 30px; font-weight: 600; line-height: 1.1; letter-spacing: -.02em; }
+  .yazi .ust { margin-top: 14px; }
+  .yuvarlak-ok {
+    position: absolute; right: 24px; bottom: 24px; width: 52px; height: 52px; border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, .35); display: flex; align-items: center; justify-content: center;
+    background: rgba(22, 24, 28, .6); transition: background-color var(--t-orta) ease, color var(--t-orta) ease, border-color var(--t-orta) ease;
+  }
+  @media (hover: hover) {
+    .kart:hover :global(.dolu) { transform: scale(1.04); }
+    .kart:hover :global(.egik) { transform: rotate(6deg) translateY(-6px); }
+    .kart:hover .yuvarlak-ok { background: var(--kiremit); border-color: var(--kiremit); color: #FFF; }
+  }
+  @media (max-width: 900px) {
+    .kart { grid-column: 1 / -1; height: 360px; }
+    .kart :global(.egik) { width: 46%; right: -16px; top: 28px; }
+  }
+</style>
